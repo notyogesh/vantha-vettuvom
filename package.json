@@ -9,6 +9,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.16.15"
+    "@astrojs/node": "^9.5.2",
+    "@tailwindcss/vite": "^4.1.18",
+    "@types/nodemailer": "^7.0.5",
+    "astro": "^5.16.15",
+    "nodemailer": "^7.0.12",
+    "tailwindcss": "^4.1.18"
   }
 }

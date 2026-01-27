@@ -1,0 +1,142 @@
+---
+export const prerender = true;
+import Layout from "../../layouts/Layout.astro";
+import posts from "../../../data/blog/posts.json";
+
+export function getStaticPaths() {
+    return posts.map((post) => ({
+        params: { slug: post.slug },
+        props: { post },
+    }));
+}
+
+const { post } = Astro.props;
+---
+
+<Layout title={post.title} description={post.excerpt}>
+    <!-- Navigation -->
+    <nav
+        class="fixed top-0 left-0 w-full z-50 py-6 px-6 lg:px-12 flex justify-between items-center bg-gray-950/90 backdrop-blur-md border-b border-white/5 shadow-2xl"
+    >
+        <a
+            href="/"
+            class="block w-32 md:w-40 grayscale brightness-0 invert opacity-90 hover:opacity-100 transition duration-300"
+        >
+            <img
+                src="/logo1.png"
+                alt="Vantha Vettuvom Logo"
+                class="w-full h-auto"
+            />
+        </a>
+        <a
+            href="/blog"
+            class="text-gray-400 hover:text-white transition text-xs md:text-sm uppercase tracking-widest font-medium flex items-center gap-2 group"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 group-hover:-translate-x-1 transition"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                ><path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg
+            >
+            Back to Blog
+        </a>
+    </nav>
+
+    <article class="bg-gray-950 min-h-screen pt-40 pb-24 px-6 md:px-12">
+        <div class="max-w-4xl mx-auto">
+            <header class="mb-12 text-center">
+                <div
+                    class="inline-block px-4 py-1 rounded-full bg-gold-900/20 border border-gold-500/20 mb-6"
+                >
+                    <span
+                        class="text-gold-500 font-bold tracking-[0.2em] uppercase text-xs"
+                        >{post.date}</span
+                    >
+                </div>
+                <h1
+                    class="text-3xl md:text-5xl lg:text-6xl font-display font-medium text-white mt-2 leading-tight max-w-5xl mx-auto"
+                >
+                    {post.title}
+                </h1>
+                <p class="text-gray-500 mt-6 text-sm uppercase tracking-widest">
+                    By {post.author}
+                </p>
+            </header>
+
+            <!-- Featured Image Placeholder (Optional) -->
+            <div
+                class="w-full h-64 md:h-96 bg-gray-900 rounded-3xl border border-white/5 mb-16 flex items-center justify-center relative overflow-hidden"
+            >
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent to-transparent opacity-50 z-10"
+                >
+                </div>
+                <!-- If we had a real image, we'd use it here. For now, a pattern. -->
+                <div
+                    class="absolute inset-0 opacity-10 bg-[url('/logo1.png')] bg-center bg-repeat bg-[length:200px_200px]"
+                >
+                </div>
+            </div>
+
+            <div
+                class="prose-content text-gray-300 text-lg leading-loose font-light space-y-6"
+            >
+                <Fragment set:html={post.content} />
+            </div>
+
+            <div class="mt-20 pt-12 border-t border-white/10 text-center">
+                <h3 class="text-3xl font-display text-white mb-6">
+                    Start Your Franchise Journey
+                </h3>
+                <p class="text-gray-400 mb-8 max-w-xl mx-auto">
+                    Join the Vantha Vettuvom family and own a profitable
+                    business in the booming salon industry.
+                </p>
+                <a
+                    href="/#inquiry-form"
+                    class="inline-block bg-gradient-to-r from-gold-500 to-gold-700 hover:from-gold-400 hover:to-gold-600 text-white font-medium tracking-wide py-4 px-12 rounded-full transition duration-300 shadow-xl shadow-gold-900/20 hover:scale-105 transform"
+                >
+                    Enquire Now
+                </a>
+            </div>
+        </div>
+    </article>
+
+    <footer class="bg-black py-16 border-t border-white/5 text-center">
+        <a
+            href="https://vanthavettuvom.com/"
+            class="inline-block w-40 mb-8 grayscale brightness-0 invert opacity-50 hover:opacity-100 transition duration-300"
+        >
+            <img
+                src="/logo1.png"
+                alt="Vantha Vettuvom Logo"
+                class="w-full h-auto"
+            />
+        </a>
+        <p class="text-gray-600 text-xs tracking-wider">
+            © {new Date().getFullYear()} VANTHA VETTUVOM SALON. ALL RIGHTS RESERVED.
+        </p>
+    </footer>
+</Layout>
+
+<style is:global>
+    /* Custom styles for content injected via set:html */
+    .prose-content p {
+        margin-bottom: 1.5rem;
+    }
+    .prose-content a {
+        color: #d6a843;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+    }
+    .prose-content strong {
+        color: #fff;
+        font-weight: 600;
+    }
+</style>
