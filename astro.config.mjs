@@ -5,7 +5,7 @@ import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
   site: "https://vanthavettuvom.com",
-  output: "server",
+  output: "static",
   adapter: vercel({
     edgeMiddleware: false,
   }),
