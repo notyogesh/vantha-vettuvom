@@ -1,6 +1,7 @@
 
-import nodemailer from 'nodemailer';
 import type { APIRoute } from 'astro';
+
+export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -16,10 +17,16 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
+    // Dynamic import to prevent cold start crashes if dependencies fail
+    const nm = (await import('nodemailer')) as any;
+    const createTransport = nm.createTransport || nm.default?.createTransport;
+
+    if (!createTransport) {
+        throw new Error("Nodemailer transport creator not found");
+    }
+
     // Create a transporter
-    // Note: For Gmail, you often need an App Password if 2FA is on.
-    // Ideally, use environment variables for sensitive data.
-    const transporter = nodemailer.createTransport({
+    const transporter = createTransport({
       service: 'gmail',
       auth: {
         user: import.meta.env.EMAIL_USER, // User needs to set this in .env
