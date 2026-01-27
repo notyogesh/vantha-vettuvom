@@ -1,0 +1,7 @@
+{
+  "framework": "astro",
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/sitemap.xml", "destination": "/sitemap-index.xml" }
+  ]
+}

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://vanthavettuvom.com/sitemap-index.xml
+Sitemap: https://vanthavettuvom.com/sitemap.xml
