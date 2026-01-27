@@ -22,14 +22,6 @@
 		{
 			"src": "^/api/submit-form/?$",
 			"dest": "_render"
-		},
-		{
-			"src": "^/blog/?$",
-			"dest": "_render"
-		},
-		{
-			"src": "^/$",
-			"dest": "_render"
 		}
 	]
 }

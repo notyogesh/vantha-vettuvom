@@ -1,6 +1,6 @@
-import nodemailer from 'nodemailer';
 export { renderers } from '../../renderers.mjs';
 
+const prerender = false;
 const POST = async ({ request }) => {
   try {
     const data = await request.formData();
@@ -13,7 +13,12 @@ const POST = async ({ request }) => {
         { status: 400 }
       );
     }
-    const transporter = nodemailer.createTransport({
+    const nm = await import('nodemailer');
+    const createTransport = nm.createTransport || nm.default?.createTransport;
+    if (!createTransport) {
+      throw new Error("Nodemailer transport creator not found");
+    }
+    const transporter = createTransport({
       service: "gmail",
       auth: {
         user: "yogeshreo@gmail.com",
@@ -56,7 +61,8 @@ const POST = async ({ request }) => {
 
 const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
-  POST
+  POST,
+  prerender
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const page = () => _page;
