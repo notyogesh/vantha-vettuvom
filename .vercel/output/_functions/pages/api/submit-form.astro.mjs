@@ -1,3 +1,4 @@
+import nodemailer from 'nodemailer';
 export { renderers } from '../../renderers.mjs';
 
 const prerender = false;
@@ -15,15 +16,15 @@ const POST = async ({ request }) => {
     }
     if (limitInfo.count >= LIMIT) {
       return new Response(
-        JSON.stringify({ message: "Too many requests. Please try again after some time." }),
+        JSON.stringify({ message: "Too many requests. Please try again later." }),
         { status: 429 }
       );
     }
     const data = await request.formData();
-    const name = data.get("name");
-    const city = data.get("city");
-    const phone = data.get("phone");
-    const honeypot = data.get("address");
+    const name = data.get("name")?.toString();
+    const city = data.get("city")?.toString();
+    const phone = data.get("phone")?.toString();
+    const honeypot = data.get("address")?.toString();
     if (honeypot) {
       return new Response(
         JSON.stringify({ message: "Automated submission detected." }),
@@ -38,22 +39,22 @@ const POST = async ({ request }) => {
     }
     limitInfo.count++;
     rateLimits.set(ip, limitInfo);
-    const nm = await import('nodemailer');
-    const createTransport = nm.createTransport || nm.default?.createTransport;
-    if (!createTransport) {
-      throw new Error("Nodemailer transport creator not found");
-    }
-    const transporter = createTransport({
-      service: "gmail",
+    const emailUser = "yogeshreo@gmail.com";
+    const emailPass = "ajpd rqwg bzoz ymmj";
+    if (!emailUser || !emailPass) ;
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      // Use SSL
       auth: {
-        user: "yogeshreo@gmail.com",
-        // User needs to set this in .env
-        pass: "ajpd rqwg bzoz ymmj"
-        // User needs to set this in .env
+        user: emailUser,
+        pass: emailPass.replace(/\s+/g, "")
+        // Remove spaces if present
       }
     });
     const mailOptions = {
-      from: "yogeshreo@gmail.com",
+      from: emailUser,
       to: "yogeshreo@gmail.com",
       subject: `New Franchise Inquiry: ${name} from ${city}`,
       text: `
@@ -64,10 +65,14 @@ const POST = async ({ request }) => {
         Phone: ${phone}
       `,
       html: `
-        <h3>New Franchise Inquiry</h3>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>City:</strong> ${city}</p>
-        <p><strong>Phone:</strong> <a href="tel:${phone}">${phone}</a></p>
+        <div style="font-family: sans-serif; padding: 20px; color: #333;">
+          <h2 style="color: #c5a059;">New Franchise Inquiry</h2>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>City:</strong> ${city}</p>
+          <p><strong>Phone:</strong> <a href="tel:${phone}">${phone}</a></p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+          <p style="font-size: 12px; color: #999;">Sent from Vantha Vettuvom Franchise Portal</p>
+        </div>
       `
     };
     await transporter.sendMail(mailOptions);
@@ -78,7 +83,10 @@ const POST = async ({ request }) => {
   } catch (error) {
     console.error("Email send error:", error);
     return new Response(
-      JSON.stringify({ message: "Error sending email", error: error.message }),
+      JSON.stringify({
+        message: "Error processing request",
+        error: error.message || "Unknown error"
+      }),
       { status: 500 }
     );
   }

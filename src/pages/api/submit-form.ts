@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import nodemailer from 'nodemailer';
 
 export const prerender = false;
 
@@ -21,18 +22,18 @@ export const POST: APIRoute = async ({ request }) => {
     
     if (limitInfo.count >= LIMIT) {
       return new Response(
-        JSON.stringify({ message: 'Too many requests. Please try again after some time.' }),
+        JSON.stringify({ message: 'Too many requests. Please try again later.' }),
         { status: 429 }
       );
     }
 
     const data = await request.formData();
-    const name = data.get('name');
-    const city = data.get('city');
-    const phone = data.get('phone');
-    const honeypot = data.get('address');
+    const name = data.get('name')?.toString();
+    const city = data.get('city')?.toString();
+    const phone = data.get('phone')?.toString();
+    const honeypot = data.get('address')?.toString();
 
-    // Honeypot check
+    // Honeypot check for bots
     if (honeypot) {
       return new Response(
         JSON.stringify({ message: 'Automated submission detected.' }),
@@ -51,25 +52,26 @@ export const POST: APIRoute = async ({ request }) => {
     limitInfo.count++;
     rateLimits.set(ip, limitInfo);
 
-    // Dynamic import to prevent cold start crashes if dependencies fail
-    const nm = (await import('nodemailer')) as any;
-    const createTransport = nm.createTransport || nm.default?.createTransport;
+    const emailUser = import.meta.env.EMAIL_USER;
+    const emailPass = import.meta.env.EMAIL_PASS;
 
-    if (!createTransport) {
-        throw new Error("Nodemailer transport creator not found");
+    if (!emailUser || !emailPass) {
+        throw new Error("SMTP credentials not configured in environment variables.");
     }
 
-    // Create a transporter
-    const transporter = createTransport({
-      service: 'gmail',
+    // Create a transporter with more robust production settings
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true, // Use SSL
       auth: {
-        user: import.meta.env.EMAIL_USER, // User needs to set this in .env
-        pass: import.meta.env.EMAIL_PASS, // User needs to set this in .env
+        user: emailUser,
+        pass: emailPass.replace(/\s+/g, ''), // Remove spaces if present
       },
     });
 
     const mailOptions = {
-      from: import.meta.env.EMAIL_USER,
+      from: emailUser,
       to: 'yogeshreo@gmail.com',
       subject: `New Franchise Inquiry: ${name} from ${city}`,
       text: `
@@ -80,10 +82,14 @@ export const POST: APIRoute = async ({ request }) => {
         Phone: ${phone}
       `,
       html: `
-        <h3>New Franchise Inquiry</h3>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>City:</strong> ${city}</p>
-        <p><strong>Phone:</strong> <a href="tel:${phone}">${phone}</a></p>
+        <div style="font-family: sans-serif; padding: 20px; color: #333;">
+          <h2 style="color: #c5a059;">New Franchise Inquiry</h2>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>City:</strong> ${city}</p>
+          <p><strong>Phone:</strong> <a href="tel:${phone}">${phone}</a></p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+          <p style="font-size: 12px; color: #999;">Sent from Vantha Vettuvom Franchise Portal</p>
+        </div>
       `,
     };
 
@@ -96,7 +102,10 @@ export const POST: APIRoute = async ({ request }) => {
   } catch (error) {
     console.error('Email send error:', error);
     return new Response(
-      JSON.stringify({ message: 'Error sending email', error: (error as Error).message }),
+      JSON.stringify({ 
+        message: 'Error processing request', 
+        error: (error as Error).message || 'Unknown error' 
+      }),
       { status: 500 }
     );
   }

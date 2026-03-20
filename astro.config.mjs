@@ -7,7 +7,7 @@ import posts from "./data/blog/posts.json";
 
 export default defineConfig({
   site: "https://vanthavettuvom.com",
-  output: "static",
+  output: "server",
   adapter: vercel({
     edgeMiddleware: false,
   }),
