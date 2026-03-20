@@ -8,7 +8,7 @@ const rateLimits = new Map<string, { count: number; lastReset: number }>();
 const LIMIT = 3;
 const WINDOW_MS = 30 * 60 * 1000; // 30 minutes
 
-export const POST: APIRoute = async ({ request }) => {
+export async function POST({ request }: { request: Request }) {
   try {
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
     const now = Date.now();

@@ -2,6 +2,13 @@
 	"version": 3,
 	"routes": [
 		{
+			"src": "^/sitemap\\.xml$",
+			"headers": {
+				"Location": "/sitemap-index.xml"
+			},
+			"status": 301
+		},
+		{
 			"handle": "filesystem"
 		},
 		{
@@ -20,7 +27,15 @@
 			"dest": "_render"
 		},
 		{
+			"src": "^/api/health/?$",
+			"dest": "_render"
+		},
+		{
 			"src": "^/api/submit-form/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/sitemap\\.xml/?$",
 			"dest": "_render"
 		}
 	]
