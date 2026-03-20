@@ -8,7 +8,6 @@ export default defineConfig({
   adapter: vercel({
     webAnalytics: { enabled: true },
   }),
-  outDir: "./dist",
   vite: {
     plugins: [tailwindcss()],
   },

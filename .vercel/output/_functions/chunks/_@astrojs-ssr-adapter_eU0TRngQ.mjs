@@ -1,12 +1,12 @@
-import { v as decryptString, w as createSlotValueFromString, x as isAstroComponentFactory, k as renderComponent, r as renderTemplate, R as ROUTE_TYPE_HEADER, y as REROUTE_DIRECTIVE_HEADER, A as AstroError, z as i18nNoLocaleFoundInPath, B as ResponseSentError, C as ActionNotFoundError, D as MiddlewareNoDataOrNextCalled, G as MiddlewareNotAResponse, H as originPathnameSymbol, J as RewriteWithBodyUsed, K as GetStaticPathsRequired, O as InvalidGetStaticPathsReturn, P as InvalidGetStaticPathsEntry, Q as GetStaticPathsExpectedParams, S as GetStaticPathsInvalidRouteParam, T as PageNumberParamNotFound, V as DEFAULT_404_COMPONENT, W as NoMatchingStaticPathFound, X as PrerenderDynamicEndpointPathCollide, Y as ReservedSlotName, Z as renderSlotToString, _ as renderJSX, $ as chunkToString, a0 as isRenderInstruction, a1 as ForbiddenRewrite, a2 as SessionStorageInitError, a3 as SessionStorageSaveError, a4 as ASTRO_VERSION, a5 as CspNotEnabled, a6 as LocalsReassigned, a7 as generateCspDigest, a8 as PrerenderClientAddressNotAvailable, a9 as clientAddressSymbol, aa as ClientAddressNotAvailable, ab as StaticClientAddressNotAvailable, ac as AstroResponseHeadersReassigned, ad as responseSentSymbol$1, ae as renderPage, af as REWRITE_DIRECTIVE_HEADER_KEY, ag as REWRITE_DIRECTIVE_HEADER_VALUE, ah as renderEndpoint, ai as LocalsNotAnObject, aj as FailedToFindPageMapSSR, ak as REROUTABLE_STATUS_CODES, al as nodeRequestAbortControllerCleanupSymbol } from './astro/server_DbjLNPQC.mjs';
+import { v as decryptString, w as createSlotValueFromString, x as isAstroComponentFactory, k as renderComponent, r as renderTemplate, y as ROUTE_TYPE_HEADER, z as REROUTE_DIRECTIVE_HEADER, A as AstroError, B as i18nNoLocaleFoundInPath, C as ResponseSentError, D as ActionNotFoundError, G as MiddlewareNoDataOrNextCalled, H as MiddlewareNotAResponse, J as originPathnameSymbol, K as RewriteWithBodyUsed, O as GetStaticPathsRequired, P as InvalidGetStaticPathsReturn, Q as InvalidGetStaticPathsEntry, S as GetStaticPathsExpectedParams, T as GetStaticPathsInvalidRouteParam, V as PageNumberParamNotFound, W as DEFAULT_404_COMPONENT, X as NoMatchingStaticPathFound, Y as PrerenderDynamicEndpointPathCollide, Z as ReservedSlotName, _ as renderSlotToString, $ as renderJSX, a0 as chunkToString, a1 as isRenderInstruction, a2 as ForbiddenRewrite, a3 as SessionStorageInitError, a4 as SessionStorageSaveError, a5 as ASTRO_VERSION, a6 as CspNotEnabled, a7 as LocalsReassigned, a8 as generateCspDigest, a9 as PrerenderClientAddressNotAvailable, aa as clientAddressSymbol, ab as ClientAddressNotAvailable, ac as StaticClientAddressNotAvailable, ad as AstroResponseHeadersReassigned, ae as responseSentSymbol$1, af as renderPage, ag as REWRITE_DIRECTIVE_HEADER_KEY, ah as REWRITE_DIRECTIVE_HEADER_VALUE, ai as renderEndpoint, aj as LocalsNotAnObject, ak as FailedToFindPageMapSSR, al as REROUTABLE_STATUS_CODES, am as nodeRequestAbortControllerCleanupSymbol } from './astro/server_3jlUvdsL.mjs';
 import colors from 'piccolore';
 import 'clsx';
-import { A as ActionError, d as deserializeActionResult, s as serializeActionResult, a as ACTION_RPC_ROUTE_PATTERN, b as ACTION_QUERY_PARAMS, g as getActionQueryString, D as DEFAULT_404_ROUTE, c as default404Instance, N as NOOP_MIDDLEWARE_FN, e as ensure404Route } from './astro-designed-error-pages_XfDq2Fls.mjs';
+import { A as ActionError, d as deserializeActionResult, s as serializeActionResult, a as ACTION_RPC_ROUTE_PATTERN, b as ACTION_QUERY_PARAMS, g as getActionQueryString, D as DEFAULT_404_ROUTE, c as default404Instance, N as NOOP_MIDDLEWARE_FN, e as ensure404Route } from './astro-designed-error-pages_xF3Hmc2m.mjs';
 import 'es-module-lexer';
 import buffer from 'node:buffer';
 import crypto$1 from 'node:crypto';
 import { Http2ServerResponse } from 'node:http2';
-import { c as appendForwardSlash, j as joinPaths, f as fileExtension, s as slash, p as prependForwardSlash, r as removeTrailingForwardSlash, d as trimSlashes, m as matchPattern, e as isInternalPath, g as collapseDuplicateTrailingSlashes, h as hasFileExtension } from './index_ty8FbXfT.mjs';
+import { c as appendForwardSlash, j as joinPaths, f as fileExtension, s as slash, p as prependForwardSlash, r as removeTrailingForwardSlash, d as trimSlashes, m as matchPattern, e as isInternalPath, g as collapseDuplicateTrailingSlashes, h as hasFileExtension } from './index_BAPvq1xm.mjs';
 import { serialize, parse } from 'cookie';
 import { unflatten as unflatten$1, stringify as stringify$1 } from 'devalue';
 import { createStorage, builtinDrivers } from 'unstorage';
@@ -99,7 +99,7 @@ async function getRequestData(request) {
       }
       const encryptedSlots = params.get("s");
       return {
-        componentExport: params.get("e"),
+        encryptedComponentExport: params.get("e"),
         encryptedProps: params.get("p"),
         encryptedSlots
       };
@@ -110,6 +110,11 @@ async function getRequestData(request) {
         const data = JSON.parse(raw);
         if ("slots" in data && typeof data.slots === "object") {
           return badRequest("Plaintext slots are not allowed. Slots must be encrypted.");
+        }
+        if ("componentExport" in data && typeof data.componentExport === "string") {
+          return badRequest(
+            "Plaintext componentExport is not allowed. componentExport must be encrypted."
+          );
         }
         return data;
       } catch (e) {
@@ -146,6 +151,12 @@ function createEndpoint(manifest) {
       });
     }
     const key = await manifest.key;
+    let componentExport;
+    try {
+      componentExport = await decryptString(key, data.encryptedComponentExport);
+    } catch (_e) {
+      return badRequest("Encrypted componentExport value is invalid.");
+    }
     const encryptedProps = data.encryptedProps;
     let props = {};
     if (encryptedProps !== "") {
@@ -167,7 +178,7 @@ function createEndpoint(manifest) {
       }
     }
     const componentModule = await imp();
-    let Component = componentModule[data.componentExport];
+    let Component = componentModule[componentExport];
     const slots = {};
     for (const prop in decryptedSlots) {
       slots[prop] = createSlotValueFromString(decryptedSlots[prop]);
@@ -944,10 +955,14 @@ function getActionContext(context) {
           }
           throw error;
         }
+        const bodySizeLimit = pipeline.manifest.actionBodySizeLimit;
         let input;
         try {
-          input = await parseRequestBody(context.request);
+          input = await parseRequestBody(context.request, bodySizeLimit);
         } catch (e) {
+          if (e instanceof ActionError) {
+            return { data: void 0, error: e };
+          }
           if (e instanceof TypeError) {
             return { data: void 0, error: new ActionError({ code: "UNSUPPORTED_MEDIA_TYPE" }) };
           }
@@ -991,17 +1006,72 @@ function getCallerInfo(ctx) {
   }
   return void 0;
 }
-async function parseRequestBody(request) {
+async function parseRequestBody(request, bodySizeLimit) {
   const contentType = request.headers.get("content-type");
-  const contentLength = request.headers.get("Content-Length");
+  const contentLengthHeader = request.headers.get("content-length");
+  const contentLength = contentLengthHeader ? Number.parseInt(contentLengthHeader, 10) : void 0;
+  const hasContentLength = typeof contentLength === "number" && Number.isFinite(contentLength);
   if (!contentType) return void 0;
+  if (hasContentLength && contentLength > bodySizeLimit) {
+    throw new ActionError({
+      code: "CONTENT_TOO_LARGE",
+      message: `Request body exceeds ${bodySizeLimit} bytes`
+    });
+  }
   if (hasContentType(contentType, formContentTypes)) {
+    if (!hasContentLength) {
+      const body = await readRequestBodyWithLimit(request.clone(), bodySizeLimit);
+      const formRequest = new Request(request.url, {
+        method: request.method,
+        headers: request.headers,
+        body: toArrayBuffer(body)
+      });
+      return await formRequest.formData();
+    }
     return await request.clone().formData();
   }
   if (hasContentType(contentType, ["application/json"])) {
-    return contentLength === "0" ? void 0 : await request.clone().json();
+    if (contentLength === 0) return void 0;
+    if (!hasContentLength) {
+      const body = await readRequestBodyWithLimit(request.clone(), bodySizeLimit);
+      if (body.byteLength === 0) return void 0;
+      return JSON.parse(new TextDecoder().decode(body));
+    }
+    return await request.clone().json();
   }
   throw new TypeError("Unsupported content type");
+}
+async function readRequestBodyWithLimit(request, limit) {
+  if (!request.body) return new Uint8Array();
+  const reader = request.body.getReader();
+  const chunks = [];
+  let received = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    if (value) {
+      received += value.byteLength;
+      if (received > limit) {
+        throw new ActionError({
+          code: "CONTENT_TOO_LARGE",
+          message: `Request body exceeds ${limit} bytes`
+        });
+      }
+      chunks.push(value);
+    }
+  }
+  const buffer = new Uint8Array(received);
+  let offset = 0;
+  for (const chunk of chunks) {
+    buffer.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return buffer;
+}
+function toArrayBuffer(buffer) {
+  const copy = new Uint8Array(buffer.byteLength);
+  copy.set(buffer);
+  return copy.buffer;
 }
 
 function hasActionPayload(locals) {
@@ -3776,6 +3846,84 @@ const createOutgoingHttpHeaders = (headers) => {
   return nodeHeaders;
 };
 
+function sanitizeHost(hostname) {
+  if (!hostname) return void 0;
+  if (/[/\\]/.test(hostname)) return void 0;
+  return hostname;
+}
+function parseHost(host) {
+  const parts = host.split(":");
+  return {
+    hostname: parts[0],
+    port: parts[1]
+  };
+}
+function matchesAllowedDomains(hostname, protocol, port, allowedDomains) {
+  const hostWithPort = port ? `${hostname}:${port}` : hostname;
+  const urlString = `${protocol}://${hostWithPort}`;
+  if (!URL.canParse(urlString)) {
+    return false;
+  }
+  const testUrl = new URL(urlString);
+  return allowedDomains.some((pattern) => matchPattern(testUrl, pattern));
+}
+function validateHost(host, protocol, allowedDomains) {
+  if (!host || host.length === 0) return void 0;
+  if (!allowedDomains || allowedDomains.length === 0) return void 0;
+  const sanitized = sanitizeHost(host);
+  if (!sanitized) return void 0;
+  const { hostname, port } = parseHost(sanitized);
+  if (matchesAllowedDomains(hostname, protocol, port, allowedDomains)) {
+    return sanitized;
+  }
+  return void 0;
+}
+function validateForwardedHeaders(forwardedProtocol, forwardedHost, forwardedPort, allowedDomains) {
+  const result = {};
+  if (forwardedProtocol) {
+    if (allowedDomains && allowedDomains.length > 0) {
+      const hasProtocolPatterns = allowedDomains.some((pattern) => pattern.protocol !== void 0);
+      if (hasProtocolPatterns) {
+        try {
+          const testUrl = new URL(`${forwardedProtocol}://example.com`);
+          const isAllowed = allowedDomains.some(
+            (pattern) => matchPattern(testUrl, { protocol: pattern.protocol })
+          );
+          if (isAllowed) {
+            result.protocol = forwardedProtocol;
+          }
+        } catch {
+        }
+      } else if (/^https?$/.test(forwardedProtocol)) {
+        result.protocol = forwardedProtocol;
+      }
+    } else if (/^https?$/.test(forwardedProtocol)) {
+      result.protocol = forwardedProtocol;
+    }
+  }
+  if (forwardedPort && allowedDomains && allowedDomains.length > 0) {
+    const hasPortPatterns = allowedDomains.some((pattern) => pattern.port !== void 0);
+    if (hasPortPatterns) {
+      const isAllowed = allowedDomains.some((pattern) => pattern.port === forwardedPort);
+      if (isAllowed) {
+        result.port = forwardedPort;
+      }
+    }
+  }
+  if (forwardedHost && forwardedHost.length > 0 && allowedDomains && allowedDomains.length > 0) {
+    const protoForValidation = result.protocol || "https";
+    const sanitized = sanitizeHost(forwardedHost);
+    if (sanitized) {
+      const { hostname, port: portFromHost } = parseHost(sanitized);
+      const portForValidation = result.port || portFromHost;
+      if (matchesAllowedDomains(hostname, protoForValidation, portForValidation, allowedDomains)) {
+        result.host = sanitized;
+      }
+    }
+  }
+  return result;
+}
+
 function apply() {
   if (!globalThis.crypto) {
     Object.defineProperty(globalThis, "crypto", {
@@ -3834,26 +3982,28 @@ class NodeApp extends App {
       return multiValueHeader?.toString()?.split(",").map((e) => e.trim())?.[0];
     };
     const providedProtocol = isEncrypted ? "https" : "http";
-    const providedHostname = req.headers.host ?? req.headers[":authority"];
-    const validated = App.validateForwardedHeaders(
+    const untrustedHostname = req.headers.host ?? req.headers[":authority"];
+    const validated = validateForwardedHeaders(
       getFirstForwardedValue(req.headers["x-forwarded-proto"]),
       getFirstForwardedValue(req.headers["x-forwarded-host"]),
       getFirstForwardedValue(req.headers["x-forwarded-port"]),
       allowedDomains
     );
     const protocol = validated.protocol ?? providedProtocol;
-    const sanitizedProvidedHostname = App.sanitizeHost(
-      typeof providedHostname === "string" ? providedHostname : void 0
+    const validatedHostname = validateHost(
+      typeof untrustedHostname === "string" ? untrustedHostname : void 0,
+      protocol,
+      allowedDomains
     );
-    const hostname = validated.host ?? sanitizedProvidedHostname;
+    const hostname = validated.host ?? validatedHostname ?? "localhost";
     const port = validated.port;
     let url;
     try {
       const hostnamePort = getHostnamePort(hostname, port);
       url = new URL(`${protocol}://${hostnamePort}${req.url}`);
     } catch {
-      const hostnamePort = getHostnamePort(providedHostname, port);
-      url = new URL(`${providedProtocol}://${hostnamePort}`);
+      const hostnamePort = getHostnamePort(hostname, port);
+      url = new URL(`${protocol}://${hostnamePort}`);
     }
     const options = {
       method: req.method || "GET",
