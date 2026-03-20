@@ -1,14 +1,44 @@
-
 import type { APIRoute } from 'astro';
 
 export const prerender = false;
 
+// Rate limiting state (in-memory, best-effort for serverless)
+const rateLimits = new Map<string, { count: number; lastReset: number }>();
+const LIMIT = 3;
+const WINDOW_MS = 30 * 60 * 1000; // 30 minutes
+
 export const POST: APIRoute = async ({ request }) => {
   try {
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
+    const now = Date.now();
+    
+    // Check Rate Limit
+    const limitInfo = rateLimits.get(ip) || { count: 0, lastReset: now };
+    if (now - limitInfo.lastReset > WINDOW_MS) {
+      limitInfo.count = 0;
+      limitInfo.lastReset = now;
+    }
+    
+    if (limitInfo.count >= LIMIT) {
+      return new Response(
+        JSON.stringify({ message: 'Too many requests. Please try again after some time.' }),
+        { status: 429 }
+      );
+    }
+
     const data = await request.formData();
     const name = data.get('name');
     const city = data.get('city');
     const phone = data.get('phone');
+    const honeypot = data.get('address');
+
+    // Honeypot check
+    if (honeypot) {
+      return new Response(
+        JSON.stringify({ message: 'Automated submission detected.' }),
+        { status: 400 }
+      );
+    }
 
     if (!name || !city || !phone) {
       return new Response(
@@ -16,6 +46,10 @@ export const POST: APIRoute = async ({ request }) => {
         { status: 400 }
       );
     }
+    
+    // Increment rate limit count
+    limitInfo.count++;
+    rateLimits.set(ip, limitInfo);
 
     // Dynamic import to prevent cold start crashes if dependencies fail
     const nm = (await import('nodemailer')) as any;

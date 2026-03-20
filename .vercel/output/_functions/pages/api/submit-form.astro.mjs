@@ -1,18 +1,43 @@
 export { renderers } from '../../renderers.mjs';
 
 const prerender = false;
+const rateLimits = /* @__PURE__ */ new Map();
+const LIMIT = 3;
+const WINDOW_MS = 30 * 60 * 1e3;
 const POST = async ({ request }) => {
   try {
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0] || "unknown";
+    const now = Date.now();
+    const limitInfo = rateLimits.get(ip) || { count: 0, lastReset: now };
+    if (now - limitInfo.lastReset > WINDOW_MS) {
+      limitInfo.count = 0;
+      limitInfo.lastReset = now;
+    }
+    if (limitInfo.count >= LIMIT) {
+      return new Response(
+        JSON.stringify({ message: "Too many requests. Please try again after some time." }),
+        { status: 429 }
+      );
+    }
     const data = await request.formData();
     const name = data.get("name");
     const city = data.get("city");
     const phone = data.get("phone");
+    const honeypot = data.get("address");
+    if (honeypot) {
+      return new Response(
+        JSON.stringify({ message: "Automated submission detected." }),
+        { status: 400 }
+      );
+    }
     if (!name || !city || !phone) {
       return new Response(
         JSON.stringify({ message: "Missing required fields" }),
         { status: 400 }
       );
     }
+    limitInfo.count++;
+    rateLimits.set(ip, limitInfo);
     const nm = await import('nodemailer');
     const createTransport = nm.createTransport || nm.default?.createTransport;
     if (!createTransport) {
