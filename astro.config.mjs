@@ -1,13 +1,14 @@
 import { defineConfig } from "astro/config";
-import node from "@astrojs/node";
+import vercel from "@astrojs/vercel";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   site: "https://vanthavettuvom.com",
   output: "server",
-  adapter: node({
-    mode: "standalone",
-  }),
+  adapter: vercel(),
+  redirects: {
+    "/sitemap.xml": "/sitemap-index.xml",
+  },
   vite: {
     plugins: [tailwindcss()],
   },
