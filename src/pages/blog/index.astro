@@ -49,11 +49,20 @@ const description =
                             href={`/blog/${post.slug}`}
                             class="group bg-white/5 rounded-2xl border border-white/10 overflow-hidden hover:border-gold-500/50 transition duration-500 block h-full"
                         >
-                            <div class="h-48 bg-gray-900 border-b border-white/5 flex items-center justify-center relative overflow-hidden">
-                                <div class="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 opacity-50" />
-                                <span class="text-5xl font-display text-white/5 group-hover:text-gold-500/10 transition duration-500 transform group-hover:scale-110">
-                                    VV
-                                </span>
+                            <div class="h-48 bg-gray-900 border-b border-white/5 relative overflow-hidden">
+                                {post.image ? (
+                                    <img 
+                                        src={post.image} 
+                                        alt={post.title} 
+                                        class="w-full h-full object-cover transition duration-500 group-hover:scale-105"
+                                    />
+                                ) : (
+                                    <div class="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 opacity-50 flex items-center justify-center">
+                                        <span class="text-5xl font-display text-white/5 group-hover:text-gold-500/10 transition duration-500 transform group-hover:scale-110">
+                                            VV
+                                        </span>
+                                    </div>
+                                )}
                             </div>
                             <div class="p-8">
                                 <span class="text-gold-500 text-xs font-bold uppercase tracking-widest">

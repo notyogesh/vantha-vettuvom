@@ -12,5 +12,17 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      serialize(item) {
+        if (/blog\/[^\/]+/.test(item.url)) {
+          // For blog posts, we can use the current date or try to match with posts.json
+          // But since we are building now, using the current date is usually fine
+          // or we can just let Astro handle it if we provide the right metadata.
+          item.lastmod = new Date().toISOString();
+        }
+        return item;
+      },
+    }),
+  ],
 });

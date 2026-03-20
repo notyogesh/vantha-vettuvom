@@ -3,12 +3,16 @@ interface Props {
 	title: string;
     description?: string;
     image?: string;
+    keywords?: string;
+    additionalSchema?: any[];
 }
 
 const { 
     title, 
     description = "Vantha Vettuvom Salon Franchise Opportunities - Start your luxury salon business today.",
-    image = "/hero-salon.png"
+    image = "/hero-salon.png",
+    keywords = "salon franchise, beauty salon franchise, vantha vettuvom, salon franchise in india, best salon franchise, low investment franchise, tamil nadu salon franchise",
+    additionalSchema = []
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -38,7 +42,8 @@ const schema = {
       "publisher": {
         "@id": "https://vanthavettuvom.com/#organization"
       }
-    }
+    },
+    ...additionalSchema
   ]
 };
 
@@ -55,7 +60,7 @@ import '../styles/global.css';
         <meta name="description" content={description} />
         
         <!-- SEO & Open Graph -->
-        <meta name="keywords" content="salon franchise, beauty salon franchise, vantha vettuvom, salon franchise in india, best salon franchise, low investment franchise, tamil nadu salon franchise" />
+        <meta name="keywords" content={keywords} />
         <link rel="canonical" href={canonicalURL} />
         
         <meta property="og:type" content="website" />
