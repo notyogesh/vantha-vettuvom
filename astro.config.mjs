@@ -8,9 +8,10 @@ import posts from "./data/blog/posts.json";
 export default defineConfig({
   site: "https://vanthavettuvom.com",
   output: "server",
-  adapter: vercel({
-    edgeMiddleware: false,
-  }),
+  adapter: vercel(),
+  redirects: {
+    "/sitemap.xml": "/sitemap-index.xml",
+  },
   vite: {
     plugins: [tailwindcss()],
   },
