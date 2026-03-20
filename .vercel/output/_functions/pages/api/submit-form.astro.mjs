@@ -5,7 +5,7 @@ const prerender = false;
 const rateLimits = /* @__PURE__ */ new Map();
 const LIMIT = 3;
 const WINDOW_MS = 30 * 60 * 1e3;
-const POST = async ({ request }) => {
+async function POST({ request }) {
   try {
     const ip = request.headers.get("x-forwarded-for")?.split(",")[0] || "unknown";
     const now = Date.now();
@@ -90,7 +90,7 @@ const POST = async ({ request }) => {
       { status: 500 }
     );
   }
-};
+}
 
 const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
