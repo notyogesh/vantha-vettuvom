@@ -33,7 +33,7 @@ const blogSchema = [
     "description": post.excerpt,
     "image": socialImageURL,
     "datePublished": post.date,
-    "dateModified": post.date,
+    "dateModified": post.modifiedDate || post.date,
     "author": {
       "@type": "Person",
       "name": authorData.name,
