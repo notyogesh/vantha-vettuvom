@@ -21,30 +21,53 @@ const authorData = {
   linkedin: post.author === "Ganapathy M.B.A" ? "https://www.linkedin.com/in/ganapathy2002/" : "https://vanthavettuvom.com/"
 };
 
-const blogSchema = [
-  {
-    "@type": "BlogPosting",
-    "@id": `${canonicalURL}#article`,
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": canonicalURL
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://vanthavettuvom.com"
     },
-    "headline": post.title,
-    "description": post.excerpt,
-    "image": socialImageURL,
-    "datePublished": post.date,
-    "dateModified": post.modifiedDate || post.date,
-    "author": {
-      "@type": "Person",
-      "name": authorData.name,
-      "jobTitle": authorData.title,
-      "url": authorData.linkedin
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://vanthavettuvom.com/blog"
     },
-    "publisher": {
-      "@id": "https://vanthavettuvom.com/#organization"
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": post.title,
+      "item": Astro.url.href
     }
+  ]
+};
+
+const blogSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": post.title,
+  "description": post.excerpt,
+  "image": socialImageURL.href,
+  "datePublished": post.date,
+  "dateModified": post.modifiedDate || post.date,
+  "author": {
+    "@type": "Person",
+    "name": authorData.name,
+    "jobTitle": authorData.title,
+    "url": authorData.linkedin
+  },
+  "publisher": {
+    "@id": "https://vanthavettuvom.com/#organization"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": Astro.url.href
   }
-];
+};
 
 const postKeywords = `${post.title.toLowerCase().split(' ').join(', ')}, whatsapp api india, cheapest whatsapp api, whatsapp business api pricing, ${post.author.toLowerCase()}`;
 ---
@@ -54,7 +77,7 @@ const postKeywords = `${post.title.toLowerCase().split(' ').join(', ')}, whatsap
     description={post.excerpt} 
     image={post.image}
     keywords={postKeywords}
-    additionalSchema={blogSchema}
+    additionalSchema={[blogSchema, breadcrumbSchema]}
 >
     <article class="bg-gray-950 min-h-screen pt-16 pb-24 px-6 md:px-12">
         <div class="max-w-4xl mx-auto">
@@ -101,7 +124,7 @@ const postKeywords = `${post.title.toLowerCase().split(' ').join(', ')}, whatsap
                         class="w-full h-full object-cover transition duration-700 group-hover:scale-105"
                     />
                 ) : (
-                    <div class="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 opacity-50 flex items-center justify-center">
+                    <div class="absolute inset-0 bg-linear-to-br from-gray-800 to-gray-900 opacity-50 flex items-center justify-center">
                         <span class="text-7xl font-display text-white/5 group-hover:text-gold-500/10 transition duration-500 transform group-hover:scale-110">VV</span>
                     </div>
                 )}

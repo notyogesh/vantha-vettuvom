@@ -14,12 +14,13 @@ const description =
     >
         <a
             href="/"
-            class="block w-32 md:w-40 grayscale brightness-0 invert opacity-90 hover:opacity-100 transition duration-300"
+            class="block w-32 md:w-40 grayscale brightness-0 invert opacity-90 hover:opacity-100 transition duration-300 relative group"
         >
+            <span class="absolute -inset-1 bg-gradient-to-r from-gold-500 to-gold-700 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></span>
             <img
                 src="/logo1.png"
                 alt="Vantha Vettuvom Logo"
-                class="w-full h-auto"
+                class="w-full h-auto relative"
             />
         </a>
         <a
@@ -56,9 +57,11 @@ const description =
                                         src={post.image} 
                                         alt={post.title} 
                                         class="w-full h-full object-cover transition duration-500 group-hover:scale-105"
+                                        loading="lazy"
+                                        decoding="async"
                                     />
                                 ) : (
-                                    <div class="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 opacity-50 flex items-center justify-center">
+                                    <div class="absolute inset-0 bg-linear-to-br from-gray-800 to-gray-900 opacity-50 flex items-center justify-center">
                                         <span class="text-5xl font-display text-white/5 group-hover:text-gold-500/10 transition duration-500 transform group-hover:scale-110">
                                             VV
                                         </span>
