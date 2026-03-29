@@ -2,6 +2,10 @@
 export const prerender = true;
 import Layout from "../../layouts/Layout.astro";
 import posts from "../../../data/blog/posts.json";
+import { Image } from "astro:assets";
+import logoImage from "../../assets/images/logo1.png";
+
+const images = import.meta.glob<{ default: ImageMetadata }>("../../assets/images/blog/*.{jpeg,jpg,png,gif}");
 
 const title = "Blog - Vantha Vettuvom Salon Franchise";
 const description =
@@ -17,10 +21,11 @@ const description =
             class="block w-32 md:w-40 grayscale brightness-0 invert opacity-90 hover:opacity-100 transition duration-300 relative group"
         >
             <span class="absolute -inset-1 bg-linear-to-r from-gold-500 to-gold-700 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></span>
-            <img
-                src="/logo1.png"
+            <Image
+                src={logoImage}
                 alt="Vantha Vettuvom Logo"
                 class="w-full h-auto relative"
+                width={160}
             />
         </a>
         <a
@@ -62,12 +67,12 @@ const description =
                         >
                             <div class="h-48 bg-gray-900 border-b border-white/5 relative overflow-hidden">
                                 {post.image ? (
-                                    <img 
-                                        src={post.image} 
+                                    <Image 
+                                        src={images[post.image.replace("/images/blog/", "../../assets/images/blog/")]()} 
                                         alt={post.title} 
                                         class="w-full h-full object-cover transition duration-500 group-hover:scale-105"
-                                        loading="lazy"
-                                        decoding="async"
+                                        width={400}
+                                        quality="mid"
                                     />
                                 ) : (
                                     <div class="absolute inset-0 bg-linear-to-br from-gray-800 to-gray-900 opacity-50 flex items-center justify-center">
@@ -118,8 +123,8 @@ const description =
                 <a href="/privacy-policy" class="text-gray-500 hover:text-gold-400 transition">Privacy Policy</a>
                 <a href="/terms-and-conditions" class="text-gray-500 hover:text-gold-400 transition">Terms & Conditions</a>
             </div>
-            <p class="text-gray-600 text-xs tracking-wider">
-                © {new Date().getFullYear()} VANTHA VETTUVOM SALON. ALL RIGHTS RESERVED.
+            <p class="text-gray-600 text-xs tracking-wider uppercase">
+                © {new Date().getFullYear()} <a href="https://www.vanthavettuvom.com/" class="hover:text-gold-400 transition-colors duration-300">VANTHA VETTUVOM SALON</a>. ALL RIGHTS RESERVED.
             </p>
         </div>
     </footer>

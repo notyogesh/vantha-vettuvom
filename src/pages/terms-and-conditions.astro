@@ -1,5 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { Image } from "astro:assets";
+import logoImage from "../assets/images/logo1.png";
 
 const title = "Terms & Conditions - Vantha Vettuvom";
 const description = "Understand our terms and conditions for using the website and franchise application.";
@@ -14,10 +16,11 @@ const description = "Understand our terms and conditions for using the website a
             class="block w-32 md:w-40 grayscale brightness-0 invert opacity-90 hover:opacity-100 transition duration-300 relative group"
         >
             <span class="absolute -inset-1 bg-linear-to-r from-gold-500 to-gold-700 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></span>
-            <img
-                src="/logo1.png"
+            <Image
+                src={logoImage}
                 alt="Vantha Vettuvom Logo"
                 class="w-full h-auto relative"
+                width={160}
             />
         </a>
         <a
@@ -73,8 +76,8 @@ const description = "Understand our terms and conditions for using the website a
                 <a href="/privacy-policy" class="text-gray-500 hover:text-gold-400 transition">Privacy Policy</a>
                 <a href="/terms-and-conditions" class="text-gray-500 hover:text-gold-400 transition">Terms & Conditions</a>
             </div>
-            <p class="text-gray-600 text-xs tracking-wider">
-                © {new Date().getFullYear()} VANTHA VETTUVOM SALON. ALL RIGHTS RESERVED.
+            <p class="text-gray-600 text-xs tracking-wider uppercase">
+                © {new Date().getFullYear()} <a href="https://www.vanthavettuvom.com/" class="hover:text-gold-400 transition-colors duration-300">VANTHA VETTUVOM SALON</a>. ALL RIGHTS RESERVED.
             </p>
         </div>
     </footer>

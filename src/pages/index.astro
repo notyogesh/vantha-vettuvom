@@ -1,12 +1,54 @@
 ---
-export const prerender = false;
-
 import Layout from "../layouts/Layout.astro";
+import { Image } from "astro:assets";
+import logoImage from "../assets/images/logo1.png";
+import heroImage from "../assets/images/hero-salon.png";
+
+const homeFAQs = [
+    {
+        question: "What is the investment required for a Vantha Vettuvom franchise?",
+        answer: "The initial investment for a Vantha Vettuvom franchise typically starts from ₹7 Lakhs. This includes franchise fees, interior setup, initial product stock, and equipment. The exact cost varies depending on the salon model and location size."
+    },
+    {
+        question: "Does Vantha Vettuvom provide staff recruitment and training?",
+        answer: "Yes, we provide end-to-end support for staff recruitment and training. We help you hire skilled stylists and provide 15 days of intensive training to ensure they meet our ultra-luxury service standards."
+    },
+    {
+        question: "How long does it take to set up a new salon?",
+        answer: "Typically, it takes 45 to 60 days to launch a new Vantha Vettuvom salon from the date of site finalization. This includes interior design, civil works, equipment installation, and staff training."
+    },
+    {
+        question: "Is it better to start from scratch or take a franchise?",
+        answer: "Starting from scratch gives you full creative control, but a franchise like Vantha Vettuvom provides a proven business model, recruitment support, and a name that guarantees customers from day one."
+    },
+    {
+        question: "Is there a monthly royalty fee?",
+        answer: "Yes, we follow a fixed monthly royalty model of ₹10,000 + GST. Unlike other brands, we do not take a percentage of your revenue, allowing you to keep all the profits as your business grows."
+    },
+    {
+        question: "How many salons does Vantha Vettuvom currently have?",
+        answer: "Vantha Vettuvom is the largest salon chain in Tamil Nadu with over 600+ successful outlets across the state, making us the most trusted and recognized brand in the industry."
+    }
+];
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": homeFAQs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer
+        }
+    }))
+};
 ---
 
 <Layout
   title="Vantha Vettuvom: #1 Luxury Salon Franchise in Tamil Nadu (600+ Salons)"
   description="Join the fastest growing luxury salon chain in Tamil Nadu. Vantha Vettuvom franchise opportunity offers high ROI and expert support."
+  additionalSchema={[faqSchema]}
 >
   <main class="relative font-body text-gray-200">
     <!-- Navbar -->
@@ -18,10 +60,12 @@ import Layout from "../layouts/Layout.astro";
         href="/"
         class="block w-40 md:w-52 grayscale brightness-0 invert opacity-90 hover:opacity-100 transition duration-300"
       >
-        <img
-          src="/logo1.png"
+        <Image
+          src={logoImage}
           alt="Vantha Vettuvom Logo"
           class="w-full h-auto drop-shadow-md"
+          width={210}
+          quality="high"
         />
       </a>
       <a
@@ -37,11 +81,14 @@ import Layout from "../layouts/Layout.astro";
     >
       <!-- Background Image -->
       <div class="absolute inset-0 z-0 select-none">
-        <img
-          src="/hero-salon.png"
+        <Image
+          src={heroImage}
           alt="Luxury Salon Interior - Vantha Vettuvom Franchise"
           class="w-full h-full object-cover opacity-60"
           draggable="false"
+          width={1920}
+          height={1080}
+          quality="max"
         />
         <!-- Overlay for better text readability -->
         <div
@@ -722,6 +769,60 @@ import Layout from "../layouts/Layout.astro";
       </div>
     </section>
 
+    <!-- FAQ Section -->
+    <section id="faq" class="py-32 bg-gray-950 px-6 lg:px-12 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-gold-500/5 blur-[120px] rounded-full -mr-48 -mt-24"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-gold-500/5 blur-[120px] rounded-full -ml-48 -mb-24"></div>
+        
+        <div class="container mx-auto max-w-4xl relative z-10">
+            <div class="text-center mb-20 animate-fade-in">
+                <span class="text-gold-500 font-medium tracking-[0.3em] uppercase text-sm block mb-4">Answers to your questions</span>
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-display font-medium text-white">
+                    Frequently Asked <span class="text-gold-400">Questions</span>
+                </h2>
+            </div>
+
+            <div class="space-y-6">
+                {homeFAQs.map((faq, index) => (
+                    <div 
+                        class="group bg-white/5 backdrop-blur-sm rounded-3xl border border-white/5 hover:border-gold-500/20 transition-all duration-500 overflow-hidden"
+                    >
+                        <details class="w-full">
+                            <summary class="flex items-center justify-between p-8 cursor-pointer list-none focus:outline-hidden">
+                                <h3 class="text-xl md:text-2xl font-display text-white group-hover:text-gold-400 transition-colors duration-300 pr-8">
+                                    {faq.question}
+                                </h3>
+                                <div class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center shrink-0 group-hover:border-gold-500/30 transition-all duration-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gold-500 transform transition-transform duration-500 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </div>
+                            </summary>
+                            <div class="px-8 pb-8">
+                                <p class="text-gray-400 text-lg leading-relaxed border-t border-white/5 pt-6">
+                                    {faq.answer}
+                                </p>
+                            </div>
+                        </details>
+                    </div>
+                ))}
+            </div>
+
+            <div class="mt-20 text-center animate-fade-in-up">
+                <p class="text-gray-400 mb-8 text-lg">Still have questions about starting your franchise?</p>
+                <a
+                    href="#inquiry-form"
+                    class="inline-flex items-center gap-3 bg-white text-black hover:bg-gold-500 hover:text-white font-semibold tracking-wide py-5 px-10 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl shadow-white/5"
+                >
+                    Contact Support
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="bg-black py-16 border-t border-white/5">
       <div
@@ -733,14 +834,20 @@ import Layout from "../layouts/Layout.astro";
           rel="noopener noreferrer"
           class="w-48 mb-8 grayscale brightness-0 invert opacity-90 hover:opacity-100 transition duration-300 block"
         >
-          <img src="/logo1.png" alt="Vantha Vettuvom" class="w-full h-auto" />
+          <Image
+            src={logoImage}
+            alt="Vantha Vettuvom"
+            class="w-full h-auto"
+            width={192}
+            quality="high"
+          />
         </a>
         <div class="flex flex-wrap justify-center gap-6 mb-8 text-xs uppercase tracking-widest font-medium">
           <a href="/privacy-policy" class="text-gray-500 hover:text-gold-400 transition">Privacy Policy</a>
           <a href="/terms-and-conditions" class="text-gray-500 hover:text-gold-400 transition">Terms & Conditions</a>
         </div>
-        <p class="text-gray-600 text-xs tracking-wider">
-          © {new Date().getFullYear()} VANTHA VETTUVOM SALON. ALL RIGHTS RESERVED.
+        <p class="text-gray-600 text-xs tracking-wider uppercase">
+          © {new Date().getFullYear()} <a href="https://www.vanthavettuvom.com/" class="hover:text-gold-400 transition-colors duration-300">VANTHA VETTUVOM SALON</a>. ALL RIGHTS RESERVED.
         </p>
       </div>
     </footer>

@@ -2,6 +2,10 @@
 export const prerender = true;
 import Layout from "../../layouts/Layout.astro";
 import posts from "../../../data/blog/posts.json";
+import { Image } from "astro:assets";
+import logoImage from "../../assets/images/logo1.png";
+
+const images = import.meta.glob<{ default: ImageMetadata }>("../../assets/images/blog/*.{jpeg,jpg,png,gif}");
 
 export function getStaticPaths() {
     return posts.map((post) => ({
@@ -14,6 +18,9 @@ const { post } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const socialImageURL = new URL(post.image || "/hero-salon.png", Astro.site);
+
+const blogImagePath = post.image ? post.image.replace("/images/blog/", "../../assets/images/blog/") : null;
+const blogImage = blogImagePath ? images[blogImagePath] : null;
 
 const authorData = {
   name: post.author,
@@ -94,7 +101,7 @@ const faqSchema = post.faqs ? {
   }))
 } : null;
 
-const postKeywords = `${post.title.toLowerCase().split(' ').join(', ')}, whatsapp api india, cheapest whatsapp api, whatsapp business api pricing, ${post.author.toLowerCase()}`;
+const postKeywords = `${post.title.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, '').split(' ').filter(w => w.length > 3).join(', ')}, ${post.author.toLowerCase()}, vantha vettuvom, salon franchise tamil nadu`;
 ---
 
 <Layout 
@@ -112,10 +119,11 @@ const postKeywords = `${post.title.toLowerCase().split(' ').join(', ')}, whatsap
             class="block w-32 md:w-40 grayscale brightness-0 invert opacity-90 hover:opacity-100 transition duration-300 relative group"
         >
             <span class="absolute -inset-1 bg-linear-to-r from-gold-500 to-gold-700 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></span>
-            <img
-                src="/logo1.png"
+            <Image
+                src={logoImage}
                 alt="Vantha Vettuvom Logo"
                 class="w-full h-auto relative"
+                width={160}
             />
         </a>
         <a
@@ -175,11 +183,13 @@ const postKeywords = `${post.title.toLowerCase().split(' ').join(', ')}, whatsap
             <div
                 class="w-full h-[400px] md:h-[500px] bg-gray-900 rounded-3xl border border-white/5 mb-16 relative overflow-hidden group shadow-2xl"
             >
-                {post.image ? (
-                    <img 
-                        src={post.image} 
+                {blogImage ? (
+                    <Image 
+                        src={blogImage()} 
                         alt={post.title} 
                         class="w-full h-full object-cover transition duration-700 group-hover:scale-105"
+                        width={1200}
+                        quality="high"
                     />
                 ) : (
                     <div class="absolute inset-0 bg-linear-to-br from-gray-800 to-gray-900 opacity-50 flex items-center justify-center">
@@ -241,18 +251,19 @@ const postKeywords = `${post.title.toLowerCase().split(' ').join(', ')}, whatsap
                 href="https://vanthavettuvom.com/"
                 class="inline-block w-40 mb-8 grayscale brightness-0 invert opacity-50 hover:opacity-100 transition duration-300"
             >
-                <img
-                    src="/logo1.png"
+                <Image
+                    src={logoImage}
                     alt="Vantha Vettuvom Logo"
                     class="w-full h-auto"
+                    width={160}
                 />
             </a>
             <div class="flex flex-wrap justify-center gap-6 mb-8 text-xs uppercase tracking-widest font-medium">
                 <a href="/privacy-policy" class="text-gray-500 hover:text-gold-400 transition">Privacy Policy</a>
                 <a href="/terms-and-conditions" class="text-gray-500 hover:text-gold-400 transition">Terms & Conditions</a>
             </div>
-            <p class="text-gray-600 text-xs tracking-wider">
-                © {new Date().getFullYear()} VANTHA VETTUVOM SALON. ALL RIGHTS RESERVED.
+            <p class="text-gray-600 text-xs tracking-wider uppercase">
+                © {new Date().getFullYear()} <a href="https://www.vanthavettuvom.com/" class="hover:text-gold-400 transition-colors duration-300">VANTHA VETTUVOM SALON</a>. ALL RIGHTS RESERVED.
             </p>
         </div>
     </footer>
