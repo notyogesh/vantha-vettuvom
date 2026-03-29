@@ -28,11 +28,24 @@ const schema = {
       "url": "https://vanthavettuvom.com",
       "logo": "https://vanthavettuvom.com/logo1.png",
       "description": description,
+      "founder": {
+        "@id": "https://vanthavettuvom.com/#founder"
+      },
       "address": {
         "@type": "PostalAddress",
         "addressRegion": "Tamil Nadu",
         "addressCountry": "IN"
       }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://vanthavettuvom.com/#founder",
+      "name": "Akhil Hussain",
+      "jobTitle": "Founder",
+      "worksFor": {
+        "@id": "https://vanthavettuvom.com/#organization"
+      },
+      "url": "https://vanthavettuvom.com"
     },
     {
       "@type": "WebSite",

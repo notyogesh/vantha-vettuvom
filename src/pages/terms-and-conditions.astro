@@ -1,0 +1,91 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const title = "Terms & Conditions - Vantha Vettuvom";
+const description = "Understand our terms and conditions for using the website and franchise application.";
+---
+
+<Layout title={title} description={description}>
+    <nav
+        class="absolute top-0 left-0 w-full z-50 py-6 px-6 lg:px-12 flex justify-between items-center bg-gray-950/80 backdrop-blur-md border-b border-white/5"
+    >
+        <a
+            href="/"
+            class="block w-32 md:w-40 grayscale brightness-0 invert opacity-90 hover:opacity-100 transition duration-300 relative group"
+        >
+            <span class="absolute -inset-1 bg-linear-to-r from-gold-500 to-gold-700 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></span>
+            <img
+                src="/logo1.png"
+                alt="Vantha Vettuvom Logo"
+                class="w-full h-auto relative"
+            />
+        </a>
+        <a
+            href="/"
+            class="text-gray-400 hover:text-white transition text-sm uppercase tracking-widest font-medium"
+            >Back to Home</a
+        >
+    </nav>
+
+    <main class="pt-48 pb-24 px-6 md:px-12 min-h-screen bg-gray-950">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-display font-medium text-white mb-12">Terms & <span class="text-gold-400">Conditions</span></h1>
+            
+            <div class="prose-content text-gray-300 space-y-8 leading-relaxed">
+                <p>Welcome to Vantha Vettuvom. By accessing or using our website, you agree to comply with and be bound by the following terms and conditions of use.</p>
+
+                <section>
+                    <h2 class="text-2xl font-display text-white mb-4">1. Acceptance of Terms</h2>
+                    <p>By using this website, you agree to these Terms and Conditions. If you do not agree, please do not use our services or provide any personal information.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-display text-white mb-4">2. Use of Content</h2>
+                    <p>All content on this website, including text, images, logos, and designs, is the property of Vantha Vettuvom and is protected by intellectual property laws. You may not reproduce, distribute, or modify any content without our prior written consent.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-display text-white mb-4">3. Franchise Inquiries</h2>
+                    <p>Submitting a franchise inquiry through this website does not guarantee a franchise agreement. All information provided in the inquiry must be accurate and truthful to the best of your knowledge.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-display text-white mb-4">4. Limitation of Liability</h2>
+                    <p>Vantha Vettuvom shall not be liable for any damages arising out of the use or inability to use this website. This includes, but is not limited to, direct, indirect, incidental, or consequential damages.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-display text-white mb-4">5. Governing Law</h2>
+                    <p>These terms are governed by the laws of India and any disputes will be subject to the exclusive jurisdiction of the courts in Tamil Nadu.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-display text-white mb-4">6. Changes to Terms</h2>
+                    <p>We reserve the right to modify these Terms and Conditions at any time without prior notice. Any changes will be effective immediately upon posting on this website.</p>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-black py-12 border-t border-white/5 text-center px-6">
+        <div class="max-w-4xl mx-auto">
+            <div class="flex flex-wrap justify-center gap-6 mb-8 text-xs uppercase tracking-widest font-medium">
+                <a href="/privacy-policy" class="text-gray-500 hover:text-gold-400 transition">Privacy Policy</a>
+                <a href="/terms-and-conditions" class="text-gray-500 hover:text-gold-400 transition">Terms & Conditions</a>
+            </div>
+            <p class="text-gray-600 text-xs tracking-wider">
+                © {new Date().getFullYear()} VANTHA VETTUVOM SALON. ALL RIGHTS RESERVED.
+            </p>
+        </div>
+    </footer>
+</Layout>
+
+<style is:global>
+    @reference "../styles/global.css";
+    .prose-content section {
+        @apply border-b border-white/5 pb-8;
+    }
+    .prose-content section:last-child {
+        @apply border-0;
+    }
+</style>

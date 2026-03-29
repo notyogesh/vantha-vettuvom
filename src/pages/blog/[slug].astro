@@ -17,8 +17,8 @@ const socialImageURL = new URL(post.image || "/hero-salon.png", Astro.site);
 
 const authorData = {
   name: post.author,
-  title: post.author === "Ganapathy M.B.A" ? "Marketing Analyst" : "Vantha Vettuvom Team",
-  linkedin: post.author === "Ganapathy M.B.A" ? "https://www.linkedin.com/in/ganapathy2002/" : "https://vanthavettuvom.com/"
+  title: post.author.includes("Ganapathy") ? "MBA Researcher & Marketing Analyst" : "Vantha Vettuvom Team",
+  linkedin: post.author.includes("Ganapathy") ? "https://www.linkedin.com/in/ganapathy2002" : "https://vanthavettuvom.com/"
 };
 
 const breadcrumbSchema = {
@@ -69,6 +69,31 @@ const blogSchema = {
   }
 };
 
+const listSchema = post.listItems ? {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": post.title,
+  "itemListElement": post.listItems.map((item, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": item.name,
+    "description": item.description
+  }))
+} : null;
+
+const faqSchema = post.faqs ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": post.faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.answer
+    }
+  }))
+} : null;
+
 const postKeywords = `${post.title.toLowerCase().split(' ').join(', ')}, whatsapp api india, cheapest whatsapp api, whatsapp business api pricing, ${post.author.toLowerCase()}`;
 ---
 
@@ -77,11 +102,44 @@ const postKeywords = `${post.title.toLowerCase().split(' ').join(', ')}, whatsap
     description={post.excerpt} 
     image={post.image}
     keywords={postKeywords}
-    additionalSchema={[blogSchema, breadcrumbSchema]}
+    additionalSchema={[blogSchema, breadcrumbSchema, listSchema, faqSchema].filter(Boolean)}
 >
-    <article class="bg-gray-950 min-h-screen pt-16 pb-24 px-6 md:px-12">
+    <nav
+        class="absolute top-0 left-0 w-full z-50 py-6 px-6 lg:px-12 flex justify-between items-center bg-gray-950/80 backdrop-blur-md border-b border-white/5"
+    >
+        <a
+            href="/"
+            class="block w-32 md:w-40 grayscale brightness-0 invert opacity-90 hover:opacity-100 transition duration-300 relative group"
+        >
+            <span class="absolute -inset-1 bg-linear-to-r from-gold-500 to-gold-700 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></span>
+            <img
+                src="/logo1.png"
+                alt="Vantha Vettuvom Logo"
+                class="w-full h-auto relative"
+            />
+        </a>
+        <a
+            href="/blog"
+            class="text-gray-400 hover:text-white transition text-sm uppercase tracking-widest font-medium"
+            >Back to Blog</a
+        >
+    </nav>
+
+    <article class="bg-gray-950 min-h-screen pt-32 pb-24 px-6 md:px-12">
         <div class="max-w-4xl mx-auto">
             <header class="mb-12 text-center">
+                <!-- Breadcrumbs -->
+                <nav class="flex items-center justify-center gap-2 text-gray-500 text-xs md:text-sm mb-12 uppercase tracking-[0.15em] font-medium">
+                    <a href="/" class="hover:text-gold-400 transition-colors duration-300">Home</a>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                    <a href="/blog" class="hover:text-gold-400 transition-colors duration-300">Blog</a>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                    <span class="text-gold-500/80 truncate max-w-[150px] md:max-w-none">{post.title}</span>
+                </nav>
                 <div
                     class="inline-block px-4 py-1 rounded-full bg-gold-900/20 border border-gold-500/20 mb-6"
                 >
@@ -140,6 +198,25 @@ const postKeywords = `${post.title.toLowerCase().split(' ').join(', ')}, whatsap
                 <Fragment set:html={post.content} />
             </div>
 
+            {post.faqs && post.faqs.length > 0 && (
+                <div class="mt-16 pt-16 border-t border-white/10">
+                    <h2 class="text-3xl font-display text-white mb-10 text-center">Frequently Asked <span class="text-gold-400">Questions</span></h2>
+                    <div class="space-y-6 max-w-3xl mx-auto">
+                        {post.faqs.map((faq) => (
+                            <div class="bg-white/5 rounded-2xl p-6 md:p-8 border border-white/5 hover:border-gold-500/20 transition duration-300">
+                                <h3 class="text-white font-semibold text-lg mb-4 flex gap-4">
+                                    <span class="text-gold-500">Q.</span> {faq.question}
+                                </h3>
+                                <p class="text-gray-400 leading-relaxed pl-8 relative">
+                                    <span class="absolute left-0 top-0 text-gold-500/40 font-bold">A.</span>
+                                    {faq.answer}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             <div class="mt-20 pt-12 border-t border-white/10 text-center">
                 <h3 class="text-3xl font-display text-white mb-6">
                     Start Your Franchise Journey
@@ -150,7 +227,7 @@ const postKeywords = `${post.title.toLowerCase().split(' ').join(', ')}, whatsap
                 </p>
                 <a
                     href="/#inquiry-form"
-                    class="inline-block bg-gradient-to-r from-gold-500 to-gold-700 hover:from-gold-400 hover:to-gold-600 text-white font-medium tracking-wide py-4 px-12 rounded-full transition duration-300 shadow-xl shadow-gold-900/20 hover:scale-105 transform"
+                    class="inline-block bg-linear-to-r from-gold-500 to-gold-700 hover:from-gold-400 hover:to-gold-600 text-white font-medium tracking-wide py-4 px-12 rounded-full transition duration-300 shadow-xl shadow-gold-900/20 hover:scale-105 transform"
                 >
                     Enquire Now
                 </a>
@@ -158,20 +235,26 @@ const postKeywords = `${post.title.toLowerCase().split(' ').join(', ')}, whatsap
         </div>
     </article>
 
-    <footer class="bg-black py-16 border-t border-white/5 text-center">
-        <a
-            href="https://vanthavettuvom.com/"
-            class="inline-block w-40 mb-8 grayscale brightness-0 invert opacity-50 hover:opacity-100 transition duration-300"
-        >
-            <img
-                src="/logo1.png"
-                alt="Vantha Vettuvom Logo"
-                class="w-full h-auto"
-            />
-        </a>
-        <p class="text-gray-600 text-xs tracking-wider">
-            © {new Date().getFullYear()} VANTHA VETTUVOM SALON. ALL RIGHTS RESERVED.
-        </p>
+    <footer class="bg-black py-16 border-t border-white/5 text-center px-6">
+        <div class="max-w-4xl mx-auto">
+            <a
+                href="https://vanthavettuvom.com/"
+                class="inline-block w-40 mb-8 grayscale brightness-0 invert opacity-50 hover:opacity-100 transition duration-300"
+            >
+                <img
+                    src="/logo1.png"
+                    alt="Vantha Vettuvom Logo"
+                    class="w-full h-auto"
+                />
+            </a>
+            <div class="flex flex-wrap justify-center gap-6 mb-8 text-xs uppercase tracking-widest font-medium">
+                <a href="/privacy-policy" class="text-gray-500 hover:text-gold-400 transition">Privacy Policy</a>
+                <a href="/terms-and-conditions" class="text-gray-500 hover:text-gold-400 transition">Terms & Conditions</a>
+            </div>
+            <p class="text-gray-600 text-xs tracking-wider">
+                © {new Date().getFullYear()} VANTHA VETTUVOM SALON. ALL RIGHTS RESERVED.
+            </p>
+        </div>
     </footer>
 </Layout>
 

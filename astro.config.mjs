@@ -16,9 +16,11 @@ export default defineConfig({
         if (item.url.endsWith('/')) {
           item.priority = 1.0;
         } else if (item.url.endsWith('/blog')) {
-          item.priority = 0.9;
+          item.priority = 0.6;
         } else if (item.url.includes('/blog/')) {
-          item.priority = 0.8;
+          item.priority = 0.7;
+        } else if (item.url.includes('/privacy-policy') || item.url.includes('/terms-and-conditions')) {
+          item.priority = 0.3;
         }
 
         const blogPost = posts.find((p) => item.url.endsWith(`/blog/${p.slug}`));
