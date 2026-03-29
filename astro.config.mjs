@@ -13,27 +13,28 @@ export default defineConfig({
   integrations: [
     sitemap({
       serialize(item) {
-        if (item.url.endsWith('/')) {
+        // More specific URL matching to avoid priority overwrites
+        const path = new URL(item.url).pathname;
+        
+        if (path === '/') {
           item.priority = 1.0;
-        } else if (item.url.endsWith('/blog')) {
+          item.changefreq = 'daily';
+        } else if (path === '/blog' || path === '/blog/') {
           item.priority = 0.6;
-        } else if (item.url.includes('/blog/')) {
+          item.changefreq = 'daily';
+        } else if (path.startsWith('/blog/')) {
           item.priority = 0.7;
-        } else if (item.url.includes('/privacy-policy') || item.url.includes('/terms-and-conditions')) {
+          item.changefreq = 'weekly';
+        } else if (path.includes('/privacy-policy') || path.includes('/terms-and-conditions')) {
           item.priority = 0.3;
+          item.changefreq = 'monthly';
         }
 
-        const blogPost = posts.find((p) => item.url.endsWith(`/blog/${p.slug}`));
+        const blogPost = posts.find((p) => path.replace(/\/$/, '') === `/blog/${p.slug}`);
         if (blogPost) {
           item.lastmod = new Date(blogPost.modifiedDate || blogPost.date);
-        } else if (item.url.endsWith('/') || item.url.endsWith('/blog')) {
-          // Use the date of the latest post for the list pages
-          const latestDate = posts.reduce((acc, p) => {
-            const date = new Date(p.modifiedDate || p.date);
-            return date > acc ? date : acc;
-          }, new Date(0));
-          item.lastmod = latestDate;
         }
+        
         return item;
       },
     }),
