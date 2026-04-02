@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
-import logoImage from "../assets/images/logo1.png";
 import heroImage from "../assets/images/hero-salon.png";
 
 const homeFAQs = [
@@ -58,13 +57,14 @@ const faqSchema = {
     >
       <a
         href="/"
-        class="block w-40 md:w-52 grayscale brightness-0 invert opacity-90 hover:opacity-100 transition duration-300"
+        class="block w-40 md:w-52 opacity-90 hover:opacity-100 transition duration-300"
       >
         <Image
-          src={logoImage}
+          src="/logo1.png"
           alt="Vantha Vettuvom Logo"
           class="w-full h-auto drop-shadow-md"
           width={210}
+          height={136}
           quality="high"
         />
       </a>
@@ -832,13 +832,14 @@ const faqSchema = {
           href="https://www.vanthavettuvom.com/"
           target="_blank"
           rel="noopener noreferrer"
-          class="w-48 mb-8 grayscale brightness-0 invert opacity-90 hover:opacity-100 transition duration-300 block"
+          class="w-48 mb-8 opacity-90 hover:opacity-100 transition duration-300 block"
         >
           <Image
-            src={logoImage}
+            src="/logo1.png"
             alt="Vantha Vettuvom"
             class="w-full h-auto"
             width={192}
+            height={125}
             quality="high"
           />
         </a>

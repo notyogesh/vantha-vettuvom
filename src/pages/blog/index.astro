@@ -3,8 +3,6 @@ export const prerender = true;
 import Layout from "../../layouts/Layout.astro";
 import posts from "../../../data/blog/posts.json";
 import { Image } from "astro:assets";
-import logoImage from "../../assets/images/logo1.png";
-
 const images = import.meta.glob<{ default: ImageMetadata }>("../../assets/images/blog/*.{jpeg,jpg,png,gif}");
 
 const title = "Blog - Vantha Vettuvom Salon Franchise";
@@ -18,14 +16,15 @@ const description =
     >
         <a
             href="/"
-            class="block w-32 md:w-40 grayscale brightness-0 invert opacity-90 hover:opacity-100 transition duration-300 relative group"
+            class="block w-32 md:w-40 opacity-90 hover:opacity-100 transition duration-300 relative group"
         >
             <span class="absolute -inset-1 bg-linear-to-r from-gold-500 to-gold-700 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></span>
             <Image
-                src={logoImage}
+                src="/logo1.png"
                 alt="Vantha Vettuvom Logo"
                 class="w-full h-auto relative"
                 width={160}
+                height={104}
             />
         </a>
         <a

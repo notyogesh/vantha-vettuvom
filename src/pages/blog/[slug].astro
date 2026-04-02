@@ -3,8 +3,6 @@ export const prerender = true;
 import Layout from "../../layouts/Layout.astro";
 import posts from "../../../data/blog/posts.json";
 import { Image } from "astro:assets";
-import logoImage from "../../assets/images/logo1.png";
-
 const images = import.meta.glob<{ default: ImageMetadata }>("../../assets/images/blog/*.{jpeg,jpg,png,gif}");
 
 export function getStaticPaths() {
@@ -116,14 +114,15 @@ const postKeywords = `${post.title.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, '').s
     >
         <a
             href="/"
-            class="block w-32 md:w-40 grayscale brightness-0 invert opacity-90 hover:opacity-100 transition duration-300 relative group"
+            class="block w-32 md:w-40 opacity-90 hover:opacity-100 transition duration-300 relative group"
         >
             <span class="absolute -inset-1 bg-linear-to-r from-gold-500 to-gold-700 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></span>
             <Image
-                src={logoImage}
+                src="/logo1.png"
                 alt="Vantha Vettuvom Logo"
                 class="w-full h-auto relative"
                 width={160}
+                height={104}
             />
         </a>
         <a
@@ -249,13 +248,14 @@ const postKeywords = `${post.title.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, '').s
         <div class="max-w-4xl mx-auto">
             <a
                 href="https://www.vanthavettuvom.com/"
-                class="inline-block w-40 mb-8 grayscale brightness-0 invert opacity-50 hover:opacity-100 transition duration-300"
+                class="inline-block w-40 mb-8 opacity-50 hover:opacity-100 transition duration-300"
             >
                 <Image
-                    src={logoImage}
+                    src="/logo1.png"
                     alt="Vantha Vettuvom Logo"
                     class="w-full h-auto"
                     width={160}
+                    height={104}
                 />
             </a>
             <div class="flex flex-wrap justify-center gap-6 mb-8 text-xs uppercase tracking-widest font-medium">
