@@ -25,7 +25,7 @@ const blogImage = blogImagePath ? images[blogImagePath] : null;
 const authorData = {
   name: post.author,
   title: post.author.includes("Ganapathy") ? "MBA Researcher & Marketing Analyst" : "Vantha Vettuvom Team",
-  linkedin: post.author.includes("Ganapathy") ? "https://www.linkedin.com/in/ganapathy2002" : "https://vanthavettuvom.com/"
+  linkedin: post.author.includes("Ganapathy") ? "https://www.linkedin.com/in/ganapathy2002" : "https://www.vanthavettuvom.com/"
 };
 
 const breadcrumbSchema = {
@@ -36,13 +36,13 @@ const breadcrumbSchema = {
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://vanthavettuvom.com"
+      "item": "https://www.vanthavettuvom.com"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Blog",
-      "item": "https://vanthavettuvom.com/blog"
+      "item": "https://www.vanthavettuvom.com/blog"
     },
     {
       "@type": "ListItem",
@@ -68,7 +68,7 @@ const blogSchema = {
     "url": authorData.linkedin
   },
   "publisher": {
-    "@id": "https://vanthavettuvom.com/#organization"
+    "@id": "https://www.vanthavettuvom.com/#organization"
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
@@ -248,7 +248,7 @@ const postKeywords = `${post.title.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, '').s
     <footer class="bg-black py-16 border-t border-white/5 text-center px-6">
         <div class="max-w-4xl mx-auto">
             <a
-                href="https://vanthavettuvom.com/"
+                href="https://www.vanthavettuvom.com/"
                 class="inline-block w-40 mb-8 grayscale brightness-0 invert opacity-50 hover:opacity-100 transition duration-300"
             >
                 <Image
