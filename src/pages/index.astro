@@ -4,8 +4,6 @@ import { Image } from "astro:assets";
 import posts from "../../data/blog/posts.json";
 import heroImage from "../assets/images/hero-salon.png";
 
-const images = import.meta.glob<{ default: ImageMetadata }>("../assets/images/blog/*.{jpeg,jpg,png,gif}", { eager: true });
-
 const recentPosts = posts
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 3);
@@ -1051,52 +1049,34 @@ const testimonials = [
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                {recentPosts.map((post) => {
-                    const postImage = post.image ? Object.entries(images).find(([path]) => path.split('/').pop() === post.image.split('/').pop())?.[1]?.default : undefined;
-                    return (
-                        <a
-                            href={`/blog/${post.slug}`}
-                            class="group bg-white/5 rounded-3xl border border-white/5 overflow-hidden hover:border-gold-500/30 transition-all duration-500 flex flex-col h-full"
-                            aria-label={`Read ${post.title}`}
-                            title={`Read ${post.title}`}
-                        >
-                            <div class="h-56 bg-gray-900 relative overflow-hidden">
-                                {postImage ? (
-                                    <Image 
-                                        src={postImage} 
-                                        alt={post.title} 
-                                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                        width={600}
-                                        quality="mid"
-                                    />
-                                ) : (
-                                    <div class="absolute inset-0 bg-linear-to-br from-gray-800 to-gray-900 opacity-50 flex items-center justify-center">
-                                        <span class="text-5xl font-display text-white/5 group-hover:text-gold-500/10 transition duration-500 transform group-hover:scale-110">VV</span>
-                                    </div>
-                                )}
-                                <div class="absolute top-4 left-4">
-                                    <div class="px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-[10px] font-bold text-gold-400 uppercase tracking-widest">
-                                        {post.date}
-                                    </div>
-                                </div>
+                {recentPosts.map((post) => (
+                    <a
+                        href={`/blog/${post.slug}`}
+                        class="group bg-white/5 rounded-3xl border border-white/5 overflow-hidden hover:border-gold-500/30 transition-all duration-500 flex flex-col h-full"
+                        aria-label={`Read ${post.title}`}
+                        title={`Read ${post.title}`}
+                    >
+                        <div class="p-8 flex flex-col grow">
+                            <div class="mb-4">
+                                <span class="px-3 py-1 rounded-full bg-gold-900/20 border border-gold-500/20 text-[10px] font-bold text-gold-400 uppercase tracking-widest">
+                                    {post.date}
+                                </span>
                             </div>
-                            <div class="p-8 flex flex-col grow">
-                                <h3 class="text-xl md:text-2xl font-display text-white mb-3 group-hover:text-gold-400 transition-colors duration-300 leading-tight">
-                                    {post.title}
-                                </h3>
-                                <p class="text-gray-400 text-sm font-light leading-relaxed mb-6 line-clamp-3">
-                                    {post.excerpt}
-                                </p>
-                                <div class="mt-auto flex items-center text-gold-500 text-xs font-bold uppercase tracking-widest gap-2">
-                                    Read Article 
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                    </svg>
-                                </div>
+                            <h3 class="text-xl md:text-2xl font-display text-white mb-3 group-hover:text-gold-400 transition-colors duration-300 leading-tight">
+                                {post.title}
+                            </h3>
+                            <p class="text-gray-400 text-sm font-light leading-relaxed mb-6 line-clamp-3">
+                                {post.excerpt}
+                            </p>
+                            <div class="mt-auto flex items-center text-gold-500 text-xs font-bold uppercase tracking-widest gap-2">
+                                Read Article 
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
                             </div>
-                        </a>
-                    );
-                })}
+                        </div>
+                    </a>
+                ))}
             </div>
 
             <div class="text-center">
