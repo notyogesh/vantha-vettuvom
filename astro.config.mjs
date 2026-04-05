@@ -52,6 +52,12 @@ export default defineConfig({
   security: {
     checkOrigin: false,
   },
+  image: {
+    service: {
+      entrypoint: 'astro/assets/services/sharp'
+    },
+    remotePatterns: [{ protocol: "https" }],
+  },
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {

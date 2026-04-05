@@ -3,6 +3,8 @@ import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import posts from "../../data/blog/posts.json";
 import heroImage from "../assets/images/hero-salon.png";
+import logoImage from "../assets/images/logo1.png";
+
 
 const recentPosts = posts
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -90,7 +92,7 @@ const testimonials = [
         title="Go to Home"
       >
         <Image
-          src="/logo1.png"
+          src={logoImage}
           alt="Vantha Vettuvom Logo"
           class="w-full h-auto drop-shadow-md"
           width={210}
@@ -351,7 +353,7 @@ const testimonials = [
       <div class="container mx-auto px-6 relative z-10">
         <div class="text-center mb-20 space-y-6">
           <span
-            class="text-gold-500 font-medium tracking-[0.2em] uppercase text-sm"
+            class="text-gold-400 font-medium tracking-[0.2em] uppercase text-sm"
             >Why Choose Us</span
           >
           <h2 class="text-4xl md:text-6xl font-display font-medium text-white">
@@ -475,9 +477,14 @@ const testimonials = [
       class="py-24 bg-gray-950 relative overflow-hidden text-center lg:text-left"
     >
       <!-- Background pattern -->
-      <div
-        class="absolute inset-0 bg-[url('/logo1.png')] bg-center bg-no-repeat opacity-[0.03] scale-150 grayscale blur-sm pointer-events-none"
-      >
+      <div class="absolute inset-0 flex items-center justify-center opacity-[0.03] scale-150 grayscale blur-sm pointer-events-none overflow-hidden">
+        <Image 
+          src={logoImage} 
+          alt="" 
+          class="w-full h-auto max-w-lg" 
+          width={800}
+          quality="low" 
+        />
       </div>
 
       <div class="container mx-auto px-6 relative z-10">
@@ -486,7 +493,7 @@ const testimonials = [
           <div class="space-y-8 order-2 lg:order-1">
             <div>
               <span
-                class="text-gold-500 font-medium tracking-[0.2em] uppercase text-sm"
+                class="text-gold-400 font-medium tracking-[0.2em] uppercase text-sm"
                 >Financial Model</span
               >
               <h2
@@ -515,9 +522,9 @@ const testimonials = [
                   >
                 </div>
                 <div>
-                  <h4 class="text-xl font-medium text-white">
+                  <h3 class="text-xl font-medium text-white">
                     Low Investment Franchise
-                  </h4>
+                  </h3>
                   <p class="text-gray-400 text-sm mt-1">
                     Start your luxury salon journey with an optimized capital
                     requirement designed for accessibility.
@@ -543,9 +550,9 @@ const testimonials = [
                   >
                 </div>
                 <div>
-                  <h4 class="text-xl font-medium text-white">
+                  <h3 class="text-xl font-medium text-white">
                     Faster Break-Even
-                  </h4>
+                  </h3>
                   <p class="text-gray-400 text-sm mt-1">
                     Our high-efficiency operational model ensures you recover
                     your investment faster than typical premium salons.
@@ -571,9 +578,9 @@ const testimonials = [
                   >
                 </div>
                 <div>
-                  <h4 class="text-xl font-medium text-white">
+                  <h3 class="text-xl font-medium text-white">
                     Transparent Commercials
-                  </h4>
+                  </h3>
                   <p class="text-gray-400 text-sm mt-1">
                     Clear cost structures with zero hidden charges. We believe
                     in building trust before building business.
@@ -629,7 +636,7 @@ const testimonials = [
       <div class="container mx-auto px-6 relative z-10">
         <div class="text-center mb-16">
           <span
-            class="text-gold-500 font-medium tracking-[0.2em] uppercase text-sm"
+            class="text-gold-400 font-medium tracking-[0.2em] uppercase text-sm"
             >Expansion Plan</span
           >
           <h2
@@ -809,10 +816,10 @@ const testimonials = [
         </div>
 
         <div class="mt-12 text-center">
-          <p class="text-gray-500 text-sm">
+          <p class="text-gray-400 text-sm">
             Don't see your city? <a
               href="#inquiry-form"
-              class="text-gold-400 hover:underline"
+              class="text-gold-400 underline decoration-gold-500/30 underline-offset-4 hover:decoration-gold-500 transition"
               title="Contact us for new territory proposals"
               >Contact us</a
             > to propose a new territory.
@@ -828,7 +835,7 @@ const testimonials = [
         
         <div class="container mx-auto max-w-4xl relative z-10">
             <div class="text-center mb-20 animate-fade-in">
-                <span class="text-gold-500 font-medium tracking-[0.3em] uppercase text-sm block mb-4">Answers to your questions</span>
+                <span class="text-gold-400 font-medium tracking-[0.3em] uppercase text-sm block mb-4">Answers to your questions</span>
                 <h2 class="text-4xl md:text-5xl lg:text-6xl font-display font-medium text-white">
                     Frequently Asked <span class="text-gold-400">Questions</span>
                 </h2>
@@ -882,7 +889,7 @@ const testimonials = [
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-gold-600/5 rounded-full blur-[120px] pointer-events-none"></div>
         <div class="container mx-auto px-6 relative z-10">
             <div class="text-center mb-16 animate-fade-in px-6">
-                <span class="text-gold-500 font-medium tracking-[0.2em] uppercase text-sm block mb-6">Success Stories</span>
+                <span class="text-gold-400 font-medium tracking-[0.2em] uppercase text-sm block mb-6">Success Stories</span>
                 <h2 class="text-4xl md:text-6xl font-display font-medium text-white tracking-tight">The <span class="text-gold-400">Wall of Love</span></h2>
                 <p class="text-gray-400 mt-6 max-w-2xl mx-auto font-light text-lg italic leading-relaxed">Hear from our family of entrepreneurs building luxury across Tamil Nadu.</p>
                 
@@ -906,7 +913,7 @@ const testimonials = [
                     <div class="hidden md:block w-px h-16 bg-white/10 relative z-10"></div>
                     <div class="flex flex-col items-center md:items-start relative z-10">
                         <span class="text-white text-3xl font-display font-medium">438+ Reviews</span>
-                        <span class="text-gray-500 text-xs mt-1 uppercase tracking-widest font-bold">Verified Partners</span>
+                        <span class="text-gray-400 text-xs mt-1 uppercase tracking-widest font-bold">Verified Partners</span>
                     </div>
                 </div>
             </div>
@@ -957,8 +964,8 @@ const testimonials = [
                                         {testimonial.name[0]}
                                     </div>
                                     <div>
-                                        <h4 class="text-white font-medium text-lg leading-none">{testimonial.name}</h4>
-                                        <p class="text-gold-500/80 text-[10px] uppercase tracking-[0.3em] mt-3 font-bold">{testimonial.city}</p>
+                                        <h3 class="text-white font-medium text-lg leading-none">{testimonial.name}</h3>
+                                        <p class="text-gold-400 text-[10px] uppercase tracking-[0.3em] mt-3 font-bold">{testimonial.city}</p>
                                     </div>
                                 </div>
                             </div>
@@ -1044,7 +1051,7 @@ const testimonials = [
     <section class="py-24 bg-gray-950 relative overflow-hidden">
         <div class="container mx-auto px-6 relative z-10">
             <div class="text-center mb-16">
-                <span class="text-gold-500 font-medium tracking-[0.2em] uppercase text-sm">Insights & Updates</span>
+                <span class="text-gold-400 font-medium tracking-[0.2em] uppercase text-sm">Insights & Updates</span>
                 <h2 class="text-3xl md:text-5xl font-display font-medium text-white mt-4">Recent <span class="text-gold-400">Blogs</span></h2>
             </div>
 
@@ -1109,7 +1116,7 @@ const testimonials = [
           title="Back to Homepage"
         >
           <Image
-            src="/logo1.png"
+            src={logoImage}
             alt="Vantha Vettuvom"
             class="w-full h-auto"
             width={192}
@@ -1118,11 +1125,11 @@ const testimonials = [
           />
         </a>
         <div class="flex flex-wrap justify-center gap-6 mb-8 text-xs uppercase tracking-widest font-medium">
-          <a href="/privacy-policy" class="text-gray-500 hover:text-gold-400 transition" aria-label="Privacy Policy" title="Read our Privacy Policy">Privacy Policy</a>
-          <a href="/terms-and-conditions" class="text-gray-500 hover:text-gold-400 transition" aria-label="Terms and Conditions" title="Read our Terms and Conditions">Terms & Conditions</a>
+          <a href="/privacy-policy" class="text-gray-400 underline decoration-white/10 underline-offset-4 hover:text-gold-400 hover:decoration-gold-500/50 transition" aria-label="Privacy Policy" title="Read our Privacy Policy">Privacy Policy</a>
+          <a href="/terms-and-conditions" class="text-gray-400 underline decoration-white/10 underline-offset-4 hover:text-gold-400 hover:decoration-gold-500/50 transition" aria-label="Terms and Conditions" title="Read our Terms and Conditions">Terms & Conditions</a>
         </div>
-        <p class="text-gray-600 text-xs tracking-wider uppercase">
-          © {new Date().getFullYear()} <a href="https://www.vanthavettuvom.com/" class="hover:text-gold-400 transition-colors duration-300" aria-label="Visit Vantha Vettuvom Website" title="Visit Vantha Vettuvom Official Website">VANTHA VETTUVOM SALON</a>. ALL RIGHTS RESERVED.
+        <p class="text-gray-400 text-xs tracking-wider uppercase">
+          © {new Date().getFullYear()} <a href="https://www.vanthavettuvom.com/" class="underline decoration-white/10 underline-offset-4 hover:text-gold-400 hover:decoration-gold-500/50 transition-colors duration-300" aria-label="Visit Vantha Vettuvom Website" title="Visit Vantha Vettuvom Official Website">VANTHA VETTUVOM SALON</a>. ALL RIGHTS RESERVED.
         </p>
       </div>
     </footer>

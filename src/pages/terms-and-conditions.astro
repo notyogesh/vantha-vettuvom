@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
+import logoImage from "../assets/images/logo1.png";
+
 const title = "Terms & Conditions - Vantha Vettuvom";
 const description = "Understand our terms and conditions for using the website and franchise application.";
 
@@ -36,7 +38,7 @@ const breadcrumbSchema = {
         >
             <span class="absolute -inset-1 bg-linear-to-r from-gold-500 to-gold-700 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></span>
             <Image
-                src="/logo1.png"
+                src={logoImage}
                 alt="Vantha Vettuvom Logo"
                 class="w-full h-auto relative"
                 width={160}
@@ -95,11 +97,11 @@ const breadcrumbSchema = {
     <footer class="bg-black py-12 border-t border-white/5 text-center px-6">
         <div class="max-w-4xl mx-auto">
             <div class="flex flex-wrap justify-center gap-6 mb-8 text-xs uppercase tracking-widest font-medium">
-                <a href="/privacy-policy" class="text-gray-500 hover:text-gold-400 transition" aria-label="Privacy Policy" title="Read our Privacy Policy">Privacy Policy</a>
-                <a href="/terms-and-conditions" class="text-gray-500 hover:text-gold-400 transition" aria-label="Terms and Conditions" title="Read our Terms and Conditions">Terms & Conditions</a>
+                <a href="/privacy-policy" class="text-gray-400 underline decoration-white/10 underline-offset-4 hover:text-gold-400 hover:decoration-gold-500/50 transition" aria-label="Privacy Policy" title="Read our Privacy Policy">Privacy Policy</a>
+                <a href="/terms-and-conditions" class="text-gray-400 underline decoration-white/10 underline-offset-4 hover:text-gold-400 hover:decoration-gold-500/50 transition" aria-label="Terms and Conditions" title="Read our Terms and Conditions">Terms & Conditions</a>
             </div>
-            <p class="text-gray-600 text-xs tracking-wider uppercase">
-                © {new Date().getFullYear()} <a href="https://www.vanthavettuvom.com/" class="hover:text-gold-400 transition-colors duration-300" aria-label="Visit Vantha Vettuvom Website" title="Visit Vantha Vettuvom Official Website">VANTHA VETTUVOM SALON</a>. ALL RIGHTS RESERVED.
+            <p class="text-gray-400 text-xs tracking-wider uppercase">
+                © {new Date().getFullYear()} <a href="https://www.vanthavettuvom.com/" class="underline decoration-white/10 underline-offset-4 hover:text-gold-400 hover:decoration-gold-500/50 transition-colors duration-300" aria-label="Visit Vantha Vettuvom Website" title="Visit Vantha Vettuvom Official Website">VANTHA VETTUVOM SALON</a>. ALL RIGHTS RESERVED.
             </p>
         </div>
     </footer>
