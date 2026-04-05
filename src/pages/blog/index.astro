@@ -82,61 +82,65 @@ const breadcrumbSchema = {
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {
-                    posts.map((post) => (
-                        <a
-                            href={`/blog/${post.slug}`}
-                            class="group bg-white/5 rounded-2xl border border-white/10 overflow-hidden hover:border-gold-500/50 transition duration-500 block h-full"
-                            aria-label={`Read ${post.title}`}
-                            title={`Read ${post.title}`}
-                        >
-                            <div class="h-48 bg-gray-900 border-b border-white/5 relative overflow-hidden">
-                                {post.image ? (
-                                    <Image 
-                                        src={images[post.image.replace("/images/blog/", "../../assets/images/blog/")]()} 
-                                        alt={post.title} 
-                                        class="w-full h-full object-cover transition duration-500 group-hover:scale-105"
-                                        width={400}
-                                        quality="mid"
-                                    />
-                                ) : (
-                                    <div class="absolute inset-0 bg-linear-to-br from-gray-800 to-gray-900 opacity-50 flex items-center justify-center">
-                                        <span class="text-5xl font-display text-white/5 group-hover:text-gold-500/10 transition duration-500 transform group-hover:scale-110">
-                                            VV
-                                        </span>
-                                    </div>
-                                )}
-                            </div>
-                            <div class="p-8">
-                                <span class="text-gold-500 text-xs font-bold uppercase tracking-widest">
-                                    {post.date}
-                                </span>
-                                <h2 class="text-2xl font-display text-white mt-3 mb-3 group-hover:text-gold-400 transition leading-tight">
-                                    {post.title}
-                                </h2>
-                                <p class="text-gray-400 text-sm line-clamp-3 leading-relaxed mb-6">
-                                    {post.excerpt}
-                                </p>
-                                <div class="flex items-center text-gold-400 text-sm font-medium mt-auto">
-                                    Read Article{" "}
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="h-4 w-4 ml-2 group-hover:translate-x-1 transition"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        aria-hidden="true"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    posts.map((post) => {
+                        const postImagePath = post.image ? post.image.replace("/images/blog/", "../../assets/images/blog/") : null;
+                        const postImage = postImagePath ? images[postImagePath] : null;
+                        return (
+                            <a
+                                href={`/blog/${post.slug}`}
+                                class="group bg-white/5 rounded-2xl border border-white/10 overflow-hidden hover:border-gold-500/50 transition duration-500 block h-full"
+                                aria-label={`Read ${post.title}`}
+                                title={`Read ${post.title}`}
+                            >
+                                <div class="h-48 bg-gray-900 border-b border-white/5 relative overflow-hidden">
+                                    {postImage ? (
+                                        <Image 
+                                            src={postImage()} 
+                                            alt={post.title} 
+                                            class="w-full h-full object-cover transition duration-500 group-hover:scale-105"
+                                            width={400}
+                                            quality="mid"
                                         />
-                                    </svg>
+                                    ) : (
+                                        <div class="absolute inset-0 bg-linear-to-br from-gray-800 to-gray-900 opacity-50 flex items-center justify-center">
+                                            <span class="text-5xl font-display text-white/5 group-hover:text-gold-500/10 transition duration-500 transform group-hover:scale-110">
+                                                VV
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
-                            </div>
-                        </a>
-                    ))
+                                <div class="p-8">
+                                    <span class="text-gold-500 text-xs font-bold uppercase tracking-widest">
+                                        {post.date}
+                                    </span>
+                                    <h2 class="text-2xl font-display text-white mt-3 mb-3 group-hover:text-gold-400 transition leading-tight">
+                                        {post.title}
+                                    </h2>
+                                    <p class="text-gray-400 text-sm line-clamp-3 leading-relaxed mb-6">
+                                        {post.excerpt}
+                                    </p>
+                                    <div class="flex items-center text-gold-400 text-sm font-medium mt-auto">
+                                        Read Article{" "}
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            class="h-4 w-4 ml-2 group-hover:translate-x-1 transition"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                            aria-hidden="true"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                            />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </a>
+                        );
+                    })
                 }
             </div>
         </div>

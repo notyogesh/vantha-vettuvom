@@ -18,7 +18,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const socialImageURL = new URL(post.image || "/hero-salon.png", Astro.site);
 
 const blogImagePath = post.image ? post.image.replace("/images/blog/", "../../assets/images/blog/") : null;
-const blogImage = blogImagePath ? images[blogImagePath] : null;
+const blogImageFunc = blogImagePath ? images[blogImagePath] : null;
+const blogImage = blogImageFunc ? blogImageFunc() : null;
 
 const authorData = {
   name: post.author,
@@ -206,7 +207,7 @@ const postKeywords = `${post.title.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, '').s
             >
                 {blogImage ? (
                     <Image 
-                        src={blogImage()} 
+                        src={blogImage} 
                         alt={post.title} 
                         class="w-full h-full object-cover transition duration-700 group-hover:scale-105"
                         width={1200}
