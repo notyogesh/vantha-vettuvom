@@ -8,15 +8,36 @@ const images = import.meta.glob<{ default: ImageMetadata }>("../../assets/images
 const title = "Blog - Vantha Vettuvom Salon Franchise";
 const description =
     "Latest news, insights, and franchise updates from Tamil Nadu's leading salon brand.";
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.vanthavettuvom.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.vanthavettuvom.com/blog"
+    }
+  ]
+};
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} additionalSchema={[breadcrumbSchema]}>
     <nav
         class="absolute top-0 left-0 w-full z-50 py-6 px-6 lg:px-12 flex justify-between items-center bg-gray-950/80 backdrop-blur-md border-b border-white/5"
     >
         <a
             href="/"
             class="block w-32 md:w-40 opacity-90 hover:opacity-100 transition duration-300 relative group"
+            aria-label="Home"
+            title="Go to Home"
         >
             <span class="absolute -inset-1 bg-linear-to-r from-gold-500 to-gold-700 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></span>
             <Image
@@ -30,6 +51,8 @@ const description =
         <a
             href="/"
             class="text-gray-400 hover:text-white transition text-sm uppercase tracking-widest font-medium"
+            aria-label="Back to Home"
+            title="Return to Homepage"
             >Back to Home</a
         >
     </nav>
@@ -39,8 +62,8 @@ const description =
             <div class="text-center mb-16">
                 <!-- Breadcrumbs -->
                 <nav class="flex items-center justify-center gap-2 text-gray-500 text-xs md:text-sm mb-8 uppercase tracking-widest font-medium">
-                    <a href="/" class="hover:text-gold-400 transition-colors duration-300">Home</a>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <a href="/" class="hover:text-gold-400 transition-colors duration-300" title="Home">Home</a>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
                     <span class="text-gold-500/80">Blog</span>
@@ -63,6 +86,8 @@ const description =
                         <a
                             href={`/blog/${post.slug}`}
                             class="group bg-white/5 rounded-2xl border border-white/10 overflow-hidden hover:border-gold-500/50 transition duration-500 block h-full"
+                            aria-label={`Read ${post.title}`}
+                            title={`Read ${post.title}`}
                         >
                             <div class="h-48 bg-gray-900 border-b border-white/5 relative overflow-hidden">
                                 {post.image ? (
@@ -99,6 +124,7 @@ const description =
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
+                                        aria-hidden="true"
                                     >
                                         <path
                                             stroke-linecap="round"
@@ -119,11 +145,11 @@ const description =
     <footer class="bg-black py-12 border-t border-white/5 text-center px-6">
         <div class="max-w-4xl mx-auto">
             <div class="flex flex-wrap justify-center gap-6 mb-8 text-xs uppercase tracking-widest font-medium">
-                <a href="/privacy-policy" class="text-gray-500 hover:text-gold-400 transition">Privacy Policy</a>
-                <a href="/terms-and-conditions" class="text-gray-500 hover:text-gold-400 transition">Terms & Conditions</a>
+                <a href="/privacy-policy" class="text-gray-500 hover:text-gold-400 transition" aria-label="Privacy Policy" title="Read our Privacy Policy">Privacy Policy</a>
+                <a href="/terms-and-conditions" class="text-gray-500 hover:text-gold-400 transition" aria-label="Terms and Conditions" title="Read our Terms and Conditions">Terms & Conditions</a>
             </div>
             <p class="text-gray-600 text-xs tracking-wider uppercase">
-                © {new Date().getFullYear()} <a href="https://www.vanthavettuvom.com/" class="hover:text-gold-400 transition-colors duration-300">VANTHA VETTUVOM SALON</a>. ALL RIGHTS RESERVED.
+                © {new Date().getFullYear()} <a href="https://www.vanthavettuvom.com/" class="hover:text-gold-400 transition-colors duration-300" aria-label="Visit Vantha Vettuvom Website" title="Visit Vantha Vettuvom Official Website">VANTHA VETTUVOM SALON</a>. ALL RIGHTS RESERVED.
             </p>
         </div>
     </footer>

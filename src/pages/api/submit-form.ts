@@ -31,6 +31,7 @@ export async function POST({ request }: { request: Request }) {
     const name = data.get('name')?.toString();
     const city = data.get('city')?.toString();
     const phone = data.get('phone')?.toString();
+    const message = data.get('message')?.toString() || 'No additional message provided';
     const honeypot = data.get('address')?.toString();
 
     // Honeypot check for bots
@@ -80,6 +81,7 @@ export async function POST({ request }: { request: Request }) {
         Name: ${name}
         City: ${city}
         Phone: ${phone}
+        Message: ${message}
       `,
       html: `
         <div style="font-family: sans-serif; padding: 20px; color: #333;">
@@ -87,6 +89,10 @@ export async function POST({ request }: { request: Request }) {
           <p><strong>Name:</strong> ${name}</p>
           <p><strong>City:</strong> ${city}</p>
           <p><strong>Phone:</strong> <a href="tel:${phone}">${phone}</a></p>
+          <p><strong>Message:</strong></p>
+          <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border-left: 4px solid #c5a059; margin-top: 5px;">
+            ${message.replace(/\n/g, '<br>')}
+          </div>
           <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
           <p style="font-size: 12px; color: #999;">Sent from Vantha Vettuvom Franchise Portal</p>
         </div>
@@ -94,6 +100,21 @@ export async function POST({ request }: { request: Request }) {
     };
 
     await transporter.sendMail(mailOptions);
+
+    // Save to Google Sheets automatically
+    const scriptUrl = import.meta.env.GOOGLE_APPS_SCRIPT_URL;
+    if (scriptUrl) {
+      try {
+        await fetch(scriptUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, city, phone, message }),
+        });
+      } catch (err) {
+        // Log error but don't fail the user submission since the email was successful
+        console.error("Google Sheets sync error:", err);
+      }
+    }
 
     return new Response(
       JSON.stringify({ message: 'Form submitted successfully!' }),
@@ -103,8 +124,7 @@ export async function POST({ request }: { request: Request }) {
     console.error('Email send error:', error);
     return new Response(
       JSON.stringify({ 
-        message: 'Error processing request', 
-        error: (error as Error).message || 'Unknown error' 
+        message: 'Error processing request'
       }),
       { status: 500 }
     );
