@@ -13,6 +13,9 @@ const latestPostDate = posts.reduce((latest, post) => {
 export default defineConfig({
   site: "https://www.vanthavettuvom.com",
   output: "server",
+  redirects: {
+    "/blog/cheapest-whatsapp-api-providers-india-2026": "/blog/affordable-whatsapp-api-providers-india-2026",
+  },
   adapter: vercel({
     webAnalytics: { enabled: true },
     imageService: true,
