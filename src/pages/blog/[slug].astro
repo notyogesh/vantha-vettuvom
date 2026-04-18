@@ -23,9 +23,11 @@ const blogImage = blogImageFunc ? blogImageFunc() : null;
 
 const authorData = {
   name: post.author,
-  title: post.author.includes("Ganapathy") ? "MBA Researcher & Marketing Analyst" : "Vantha Vettuvom Team",
+  title: post.author.includes("Ganapathy") ? "Marketing & Growth Strategist" : "Vantha Vettuvom Team",
   linkedin: post.author.includes("Ganapathy") ? "https://www.linkedin.com/in/ganapathy2002" : "https://www.vanthavettuvom.com/"
 };
+
+const wordCount = post.content.replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length;
 
 const breadcrumbSchema = {
   "@context": "https://schema.org",
@@ -58,6 +60,7 @@ const blogSchema = {
   "headline": post.title,
   "description": post.excerpt,
   "image": socialImageURL.href,
+  "wordCount": wordCount,
   "datePublished": post.date,
   "dateModified": post.modifiedDate || post.date,
   "author": {
@@ -113,6 +116,7 @@ const postKeywords = `${post.title.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, '').s
     title={post.title} 
     description={post.excerpt} 
     image={post.image}
+    type="article"
     keywords={postKeywords}
     additionalSchema={[blogSchema, breadcrumbSchema, listSchema, faqSchema].filter(Boolean)}
 >
