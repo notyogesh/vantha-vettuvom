@@ -87,7 +87,7 @@ const blogSchema = {
 const listSchema = post.listItems ? {
   "@context": "https://schema.org",
   "@type": "ItemList",
-  "name": post.title,
+  "name": post.listName || post.title,
   "itemListElement": post.listItems.map((item, index) => ({
     "@type": "ListItem",
     "position": index + 1,
